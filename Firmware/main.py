@@ -6,6 +6,7 @@ import ujson
 import utime
 import ntptime
 import random
+from ina226 import INA226
 
 def sub_cb(topic, msg):
     global tim,tim2, PWM,scan_state,scan_rate,AVG,Nsens
@@ -29,6 +30,7 @@ def sub_cb(topic, msg):
             scan_rate=int(ATTR.get('Scan Rate'))
             if scan_state==b'on':
                 tim2.deinit()
+                tim.deinit()
                 tim.init(period=scan_rate,callback=Scan_callback)        
             print(scan_rate)
         #if topic==b's/'+str(Nsens)+b'/CONFIG/ON_DEMAND':                   #pedido de medicion on demand
@@ -82,8 +84,8 @@ def Scan_callback(timer):                # calback para el escaneo de los sensor
     values[6]=Pin_STS.value()                                   #acuse de estado de lampara (bit interno)
     #values[6]=PWM
     #medicion de tension y corriente
-    values[3]=random.getrandbits(8)
-    values[4]=random.getrandbits(8)
+    values[3]=ina.bus_voltage
+    values[4]=ina.current
     #a=utime.localtime()
     #values[0]=str(a[0])+'/'+str(a[1])+'/'+str(a[2])+' '+str(a[3])+':'+str(a[4])+':'+str(a[5])
     values[0]=utime.time()
@@ -157,7 +159,8 @@ Pin_sda=machine.Pin(5)
 Pin_scl=machine.Pin(4)
 i2c = machine.I2C(freq=400000,sda=Pin_sda,scl=Pin_scl) 
 i2c.writeto(35, b'\x10')
-
+ina=INA226(i2c)
+ina.set_calibration_custom(calValue=512, config=0x4127)
 #configuracion de MQTT
 #c = MQTTClient("umqtt_client", "test.mosquitto.org")
 #c = MQTTClient("umqtt_client2",'192.168.43.188')
