@@ -1,0 +1,1 @@
+{"ssid": "Fibertel+WiFi621+2.4GHz", "pword": "00437348258", "url_mqtt": "sisconet.com.ar", "user_mqtt": "N5zwdPO48A6SgPiQ2jbq", "Muestras Promedio": "2", "Scan Rate": "6000", "pword_mqtt": "", "PWM": "60", "id": "1", "Scan status": "on"}

@@ -1,0 +1,28 @@
+<html>
+ <head>
+  <title>
+   ESP Web Server
+  </title> 
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,"> 
+ </head>
+ <body> 
+  <h1>ESP Web Server</h1> 
+   <form action="/Submit">
+   <label for="lssid">SSID:</label><br>
+    <select id="ssid" name="ssid">@REDES@
+    </select><br>
+   <label for="lpword">PASSWORD:</label><br>
+   <input type="text" id="pword" name="pword" value=""><br>
+   <label for="lid">ID:</label><br>
+   <input type="id" id="id" name="id" value=""><br><br>
+   <label for="User MQTT">User MQTT:</label><br>
+   <input type="user_mqtt" id="user_mqtt" name="user_mqtt" value=""><br><br>
+   <label for="Password MQTT">Password MQTT:</label><br>
+   <input type="pword_mqtt" id="pword_mqtt" name="pword_mqtt" value=""><br><br>
+   <label for="URL Broker MQTT">URL Broker MQTT:</label><br>
+   <input type="url_mqtt" id="url_mqtt" name="url_mqtt" value=""><br><br>
+   <input type="submit" value="Submit">
+   </form>
+ </body>
+ </html>
