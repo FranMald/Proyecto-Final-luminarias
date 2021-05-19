@@ -12,22 +12,23 @@ esp.osdebug(None)
 import gc
 gc.collect()
 
-ssid = 'MicroPython-AP'
-password = '123456789'
+ap_ssid = 'MicroPython-AP'
+ap_pword = '123456789'
 
 
 ap = network.WLAN(network.AP_IF)
 sta = network.WLAN(network.STA_IF)
 ap.active(True)
 sta.active(True)
-ap.config(essid=ssid, password=password)
-
+ap.config(essid=ap_ssid, password=ap_pword)
+led = Pin(2, Pin.OUT)
 while ap.active() == False:
-  pass
+    led.on()
+    utime.sleep_ms(200)
+    led.off()
+    utime.sleep_ms(200)
+    pass
 
 print('Connection successful')
 print(ap.ifconfig())
-
-led = Pin(2, Pin.OUT)
-
-gc.collect()
+led.on()

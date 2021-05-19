@@ -30,8 +30,11 @@ def web_page_2():
   f = open('back.html')
   html=f.read()
   f.close()
+  f = open('Config.txt', 'r')
+  Config=f.read()
+  f.close()
+  html=html.replace("@CONFIG@",Config)
   return html
-
 
 def sub_cb(topic, msg):
     global tim,tim2, PWM,scan_state,scan_rate,AVG,Nsens,muestras
@@ -124,7 +127,6 @@ def Scan_callback(timer):                # calback para el escaneo de los sensor
         c.publish(topic, OUT)
     except:
         #print ('fallo de publish')
-        do_connect()
         c.connect()
 
 pin_EN= machine.Pin(13,machine.Pin.OUT)
@@ -154,6 +156,7 @@ url="sisconet.com.ar"
 #url="test.mosquitto.org"
 #url="68.183.146.169"
 
+#carga de parametros desde archivo
 f = open('Config.txt')
 ATTR=ujson.loads(f.read())
 ATTR_txt=ujson.dumps(ATTR)
@@ -161,96 +164,100 @@ PWM=int(ATTR.get('PWM'))
 AVG=int(ATTR.get('Muestras Promedio'))
 scan_rate=int(ATTR.get('Scan Rate'))
 scan_state=ATTR.get('Scan status')
+user=ATTR.get('mqtt_user')
+pword=ATTR.get('mqtt_pword')
+url=ATTR.get('mqtt_url')
+wifi_ssid=ATTR.get('wifi_ssid')
+wifi_pword=ATTR.get('wifi_pword')
+
 f.close()
+auxi=do_connect(wifi_ssid,wifi_pword)
+print (auxi)
+if auxi:
 
-do_connect()
-
-#seteo de hora
-for i in range(0,5):
+    #seteo de hora
+    for i in range(0,5):
+        try:
+            t = ntptime.time()
+            i=5
+            FAIL_settime=0
+        except:
+            print("error al configurar hora")#volver a intentar cada tanto
+            FAIL_settime=1	
     try:
-        t = ntptime.time()
-        i=5
-	FAIL_settime=0
+        print (t)
     except:
-        print("error al configurar hora")#volver a intentar cada tanto
-	FAIL_settime=1
-	
-try:
-    print (t)
-except:
-    t=0
-    FAIL_settime=1 #volvler a tratar si no pudo configurar la hora al principio (IMPLEMENTAR)
-    
-tm = utime.localtime(t + dt)
-tm = tm[0:3] + (0,) + tm[3:6] + (0,)
-machine.RTC().datetime(tm) 
+        t=0
+        FAIL_settime=1 #volvler a tratar si no pudo configurar la hora al principio (IMPLEMENTAR)
+        
+    tm = utime.localtime(t + dt)
+    tm = tm[0:3] + (0,) + tm[3:6] + (0,)
+    machine.RTC().datetime(tm) 
 
-Pin_STS=machine.Pin(16,machine.Pin.IN)
+    Pin_STS=machine.Pin(16,machine.Pin.IN)
 
-#configuracion PWM
-pin_PWM= machine.Pin(2)
-ctrl_PWM = machine.PWM(pin_PWM)
-ctrl_PWM.freq(100)
-ctrl_PWM.duty(PWM)
+    #configuracion PWM
+    pin_PWM= machine.Pin(2)
+    ctrl_PWM = machine.PWM(pin_PWM)
+    ctrl_PWM.freq(100)
+    ctrl_PWM.duty(PWM)
 
-#configuracion del sensor de temperatura humedad
-d = dht.DHT11(machine.Pin(0))
+    #configuracion del sensor de temperatura humedad
+    d = dht.DHT11(machine.Pin(0))
 
-#configuracion del i2c para sensor de luz
-Pin_sda=machine.Pin(5)
-Pin_scl=machine.Pin(4)
-i2c = machine.I2C(freq=400000,sda=Pin_sda,scl=Pin_scl) 
-i2c.writeto(35, b'\x10')
-ina=INA226(i2c,addr=0x40)
-ina.set_calibration_custom(calValue=512, config=0x4127)
+    #configuracion del i2c para sensor de luz
+    Pin_sda=machine.Pin(5)
+    Pin_scl=machine.Pin(4)
+    i2c = machine.I2C(freq=400000,sda=Pin_sda,scl=Pin_scl) 
+    i2c.writeto(35, b'\x10')
+    ina=INA226(i2c,addr=0x40)
+    ina.set_calibration_custom(calValue=512, config=0x4127)
 
-#configuracion de MQTT
-c = MQTTClient("sensor"+str(Nsens),server=url,port=1883,user=user,password=pwrd,keepalive=30)
-c.set_callback(sub_cb)
-c.connect()
-#for i in range(0,5):
-#    try:
-#        c.connect()
-#        i=5
-#    except:
-#        print("fallo en conexion MQTT")
+    #configuracion de MQTT
+    c = MQTTClient("sensor"+str(Nsens),server=url,port=1883,user=user,password=pwrd,keepalive=30)
+    c.set_callback(sub_cb)
+    c.connect()
+    #for i in range(0,5):
+    #    try:
+    #        c.connect()
+    #        i=5
+    #    except:
+    #        print("fallo en conexion MQTT")
 
-#loop principal
+    #loop principal
 
-#configuracion timer        
-tim = machine.Timer(1)
-tim2 = machine.Timer(2)
-tim2.init(period=1000,callback=Sub_timer2_cb)
-print("timers OK")      
-if scan_state=='on':
-    tim.init(period=scan_rate,callback=Scan_callback)
-if scan_state=='off':
-    tim.deinit()
-##        
-print ('Inicio de medicion')
+    #configuracion timer        
+    tim = machine.Timer(1)
+    tim2 = machine.Timer(2)
+    tim2.init(period=1000,callback=Sub_timer2_cb)
+    print("timers OK")      
+    if scan_state=='on':
+        tim.init(period=scan_rate,callback=Scan_callback)
+    if scan_state=='off':
+        tim.deinit()
+    ##        
+    print ('Inicio de medicion')
 
-#print(ATTR_txt)
-#c.publish(attributes, ATTR_txt)
+    #print(ATTR_txt)
+    #c.publish(attributes, ATTR_txt)
 
 
-print("Suscribirse a TOPIC")        
-c.subscribe(attributes)
-print(attributes) 
+    print("Suscribirse a TOPIC")        
+    c.subscribe(attributes)
+    print(attributes) 
 
-pin_EN.on()
-
+    pin_EN.on()
+print("memoria libre ANTES: "+str(esp.freemem()))
 print("Abrir socket")
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind(('', 80))
 s.listen(1)
 
-while True:
-    print(esp.freemem())
+while True:    
     utime.sleep_ms(1)
     global APS
     conn, addr = s.accept()
-    print("memoria libre")
-    print(esp.freemem())
+    print("memoria libre: "+str(esp.freemem()))
     form_data=[[0,0],[0,0],[0,0]]
     print('Got a connection from %s' % str(addr))
     request = conn.recv(1024)
@@ -262,7 +269,12 @@ while True:
     if request[0]=='/':
         print("HOME")
         response = web_page()
-    else:
+        conn.send('HTTP/1.1 200 OK\n')
+        conn.send('Content-Type: text/html\n')
+        conn.send('Connection: close\n\n')
+        conn.sendall(response)
+        conn.close()
+    elif request[0]=='/Submit':
         parametros=request[1]
         parametros=parametros.replace('=','":"')
         parametros=parametros.replace('&','","')
@@ -271,24 +283,31 @@ while True:
         f = open('Config.txt')
         config_old=ujson.loads(f.read())
         f.close()
-        config_old["ssid"]=config_new["ssid"]
-        config_old["pword"]=config_new["pword"]
+        config_old["wifi_ssid"]=config_new["wifi_ssid"].replace('+',' ')
+        config_old["wifi_pword"]=config_new["wifi_pword"]
         config_old["id"]=config_new["id"]
-        config_old["user_mqtt"]=config_new["user_mqtt"]
-        config_old["pword_mqtt"]=config_new["pword_mqtt"]
-        config_old["url_mqtt"]=config_new["url_mqtt"]
+        config_old["mqtt_user"]=config_new["mqtt_user"]
+        config_old["mqtt_pword"]=config_new["mqtt_pword"]
+        config_old["mqtt_url"]=config_new["mqtt_url"]
         config_str=ujson.dumps(config_old)
-        print(config_str)
+        #print(config_str)
         f = open('Config.txt', 'w')
         f.write(config_str)
         f.close() 
-        response = web_page_2()# buscar forma de insertar IP en href para que vuelva al inicio    
-    print('Content = %s' % request)
-    conn.send('HTTP/1.1 200 OK\n')
-    conn.send('Content-Type: text/html\n')
-    conn.send('Connection: close\n\n')
-    conn.sendall(response)
-    conn.close()
+        response = web_page_2()# buscar forma de insertar IP en href para que vuelva al inicio 
+        conn.send('HTTP/1.1 200 OK\n')
+        conn.send('Content-Type: text/html\n')
+        conn.send('Connection: close\n\n')
+        conn.sendall(response)
+        utime.sleep_ms(1000)
+        conn.close()
+    elif request[0]=='/Reset':
+        print ("--------------------reset----------------------")
+        machine.reset()
+    #print('Content = %s' % request)
+    
     response=""
     request=""
+    parametros=[]
+    print("memoria libre despues: "+str(esp.freemem()))
 #final del codigo 
