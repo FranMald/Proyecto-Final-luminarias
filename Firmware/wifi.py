@@ -28,4 +28,7 @@ def do_connect(ssid, pword):
             print("ssid no encoontrada")
             return 0
     else:
-        return 2'+IDEUPcontent+'
+        print('network config:', sta_if.ifconfig())
+        return 2
+	
+	'+IDEUPcontent+'

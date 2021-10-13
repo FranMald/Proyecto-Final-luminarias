@@ -14,7 +14,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L Placa-tesis-rescue:Nodemcuv_3-nodemcu U2
+L Placa-tesis-rescue:Nodemcuv_3-nodemcu-Placa-tesis-rescue U2
 U 1 1 5B848AAA
 P 12400 2300
 F 0 "U2" H 13741 2671 50  0000 L CNN
@@ -489,7 +489,7 @@ Wire Wire Line
 Wire Wire Line
 	3750 4750 3850 4750
 $Comp
-L Placa-tesis-rescue:LM3464AMH_NOPB-LM3464AMH_NOPB U4
+L Placa-tesis-rescue:LM3464AMH_NOPB-LM3464AMH_NOPB-Placa-tesis-rescue U4
 U 1 1 5B8487B7
 P 2850 2250
 F 0 "U4" H 2850 3420 50  0000 C CNN
@@ -1819,7 +1819,7 @@ DR1
 Text GLabel 6200 3500 1    50   Input ~ 10
 Vin
 $Comp
-L Placa-tesis-rescue:FT230XS-Interface_USB U9
+L Placa-tesis-rescue:FT230XS-Interface_USB-Placa-tesis-rescue U9
 U 1 1 5D99DAF0
 P 7250 9700
 F 0 "U9" H 7250 8822 50  0000 C CNN

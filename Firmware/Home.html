@@ -1,0 +1,31 @@
+<html>
+ <head>
+  <title>
+   ESP Web Server
+  </title> 
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,"> 
+ </head>
+ <body> 
+  <h1>ESP Web Server</h1> 
+   <form action="/Submit">
+   <label for="lssid">SSID:</label><br>
+    <select id="wifi_ssid" name="wifi_ssid">@REDES@
+    </select> @wifi_ssid@<br>
+   <label for="lpword">PASSWORD:</label><br> 
+   <input type="text" id="wifi_pword" name="wifi_pword" value="">@wifi_pword@<br>
+   <label for="lid">ID:</label><br>
+   <input type="id" id="id" name="id" value="">@id@<br>
+   <label for="User MQTT">User MQTT:</label><br>
+   <input type="mqtt_user" id="mqtt_user" name="mqtt_user" value="">@mqtt_user@<br>
+   <label for="Password MQTT">Password MQTT:</label><br>
+   <input type="mqtt_pword" id="mqtt_pword" name="mqtt_pword" value="">@mqtt_pword@<br>
+   <label for="URL Broker MQTT">URL Broker MQTT:</label><br>
+   <input type="mqtt_url" id="mqtt_url" name="mqtt_url" value="">@mqtt_url@<br>
+   <input type="submit" value="Submit">
+   </form>
+   <form action="/Reset">
+   <input type="submit" value="Reset">
+   </form>
+ </body>
+ </html>

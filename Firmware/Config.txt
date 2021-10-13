@@ -1,1 +1,1 @@
-{"mqtt_pword": "", "wifi_pword": "00437348258", "wifi_ssid": "Fibertel WiFi621 2.4GHz", "mqtt_url": "sisconet.com.ar", "Muestras Promedio": "2", "Scan Rate": "6000", "id": "1", "mqtt_user": "fTjc36ri98tEl7PK6lId", "Scan status": "on", "PWM": "60"}
+{"mqtt_pword": "", "Scan Rate": "5000", "wifi_ssid": "DAVITELWIFI34778", "Light status": "off", "mqtt_url": "demo.thingsboard.io", "wifi_pword": "Ja5Achoh", "id": "2", "Muestras_AVG": "100", "Scan status": "on", "mqtt_user": "QKNc5TFgtJLQiy9lnQNa", "PWM": "390"}
