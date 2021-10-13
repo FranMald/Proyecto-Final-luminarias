@@ -1,1 +1,1 @@
-{"mqtt_pword": "", "Scan Rate": "5000", "wifi_ssid": "DAVITELWIFI34778", "Light status": "off", "mqtt_url": "demo.thingsboard.io", "wifi_pword": "Ja5Achoh", "id": "3", "Muestras_AVG": "100", "Scan status": "on", "mqtt_user": "QKNc5TFgtJLQiy9lnQNa", "PWM": "390"}
+{"mqtt_pword": "", "Scan Rate": "5000", "wifi_ssid": "DAVITELWIFI34778", "Light status": "off", "mqtt_url": "demo.thingsboard.io", "wifi_pword": "Ja5Achoh", "id": "3", "Muestras_AVG": "100", "Scan status": "on", "mqtt_user": "QKNc5TFgtJLQiy9lnQNa", "PWM": "391"}
