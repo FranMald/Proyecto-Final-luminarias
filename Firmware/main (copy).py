@@ -46,11 +46,12 @@ def web_page_2():
   Config=f.read()
   f.close()
   html=html.replace("@CONFIG@",Config)
+  
   return html
 
 #rutina que se ejecuta cuando se detecta un nuevo mensaje en un topic suscripto
 def sub_cb(topic_cb, msg):
-    global tim,tim2, PWM,light_state,scan_state,scan_rate,AVG,muestras,SUM,ATTR,topic_last,INH,PID_state  
+    global tim,tim2, PWM,light_state,scan_state,scan_rate,AVG,muestras,SUM,ATTR,topic_last,INH    
     INH=0
     tim2.deinit()
     print(topic_cb)
@@ -79,13 +80,6 @@ def sub_cb(topic_cb, msg):
         if light_state=='on':
             c.publish(topic_last,'true')
         if light_state=='off':
-            c.publish(topic_last,'false')
-    if ATTR.get('method')=='getPIDStat':
-	topic_last=str(topic_last)[2:-1]
-        topic_last=topic_last.replace("request","response")
-        if PID_state=='on':
-            c.publish(topic_last,'true')
-        if PID_state=='off':
             c.publish(topic_last,'false')
     #ejecucion del comando de seteo de PWM
     if ATTR.get('method')=='setPWM':
@@ -164,9 +158,11 @@ def sub_cb(topic_cb, msg):
     config_old["Scan Rate"]=str(scan_rate) 
     config_old["Scan status"]=str(scan_state) 
     config_old["Light status"]=str(light_state)
-    config_old["PID_state"]=str(PID_state)  
+    config_old["PID_state"]=str(PID_state)    
     config_str=ujson.dumps(config_old)
     f = open('Config.txt', 'w')
+    print('a')
+    print(config_str)
     f.write(config_str)
     f.close()
     #se publica los atriubutos mas recientes
@@ -176,7 +172,7 @@ def sub_cb(topic_cb, msg):
 
     
 def Sub_timer2_cb(timer):
-    global d,c,values,Pin_STS,tags,x,muestras,INH,ctrl_PWM
+    global d,c,values,Pin_STS,tags,x,muestras,INH
     if INH:
         tim2.deinit()
         
@@ -199,7 +195,7 @@ def Sub_timer2_cb(timer):
         if PID_state=="on":
             values[7]=pid(int(values[5]-values[6]))
             #print(values[7],values[5],values[6],values[5]-values[6])
-            ctrl_PWM.duty(int(values[7]))
+            #ctrl_PWM.duty(PWM)
         else:
             values[7]=PWM
         #se agrega la medicion actual al buffer
@@ -362,7 +358,7 @@ if auxi:
     pid.Ki=1
     pid.Kd=0
     pid.setpoint=0
-    pid.output_limits = (10, 300) 
+    pid.output_limits = (0, 1024) 
     #configuracion de MQTT
     c = MQTTClient("sensor"+str(id_sensor),server=url,user=user,password=pword,keepalive=30)
     c.set_callback(sub_cb)
