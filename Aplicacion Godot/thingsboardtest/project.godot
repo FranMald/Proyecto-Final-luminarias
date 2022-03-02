@@ -1,0 +1,53 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+[application]
+
+config/name="chart-gd"
+run/main_scene="res://Control.tscn"
+config/icon="res://icon.png"
+
+[autoload]
+
+ECUtilities="*res://addons/easy_charts/utilities/scripts/ec_utilities.gd"
+
+[display]
+
+window/size/width=720
+window/size/height=1024
+window/stretch/mode="viewport"
+window/stretch/aspect="expand"
+
+[editor_plugins]
+
+enabled=PoolStringArray(  )
+
+[gui]
+
+timers/tooltip_delay_sec=0.1
+
+[importer_defaults]
+
+texture={
+"flags/filter": true,
+"flags/mipmaps": true
+}
+
+[physics]
+
+common/enable_pause_aware_picking=true
+
+[physics_2d]
+
+motion_fix_enabled=true
+
+[rendering]
+
+environment/default_environment="res://default_env.tres"
