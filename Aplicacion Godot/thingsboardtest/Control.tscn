@@ -128,6 +128,17 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Button5" type="Button" parent="."]
+margin_left = 258.0
+margin_top = 125.0
+margin_right = 342.0
+margin_bottom = 171.0
+theme = SubResource( 4 )
+text = "DEBUG"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="ItemList" type="ItemList" parent="."]
 margin_left = 31.0
 margin_top = 186.0
@@ -144,6 +155,8 @@ __meta__ = {
 [node name="CustomerRequest" type="HTTPRequest" parent="."]
 
 [node name="TelemetryRequest" type="HTTPRequest" parent="."]
+
+[node name="AttributesRequest" type="HTTPRequest" parent="."]
 
 [node name="GridContainer" type="GridContainer" parent="."]
 anchor_left = 0.5
@@ -309,15 +322,139 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="GridContainer2" type="GridContainer" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = 26.0
+margin_top = 148.0
+margin_right = 155.0
+margin_bottom = 252.0
+columns = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_id" type="Label" parent="GridContainer2"]
+margin_right = 63.0
+margin_bottom = 14.0
+text = "ID:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Data_id" type="Label" parent="GridContainer2"]
+margin_left = 67.0
+margin_right = 67.0
+margin_bottom = 14.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_temp" type="Label" parent="GridContainer2"]
+margin_top = 18.0
+margin_right = 63.0
+margin_bottom = 32.0
+text = "TEMP:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Data_temp" type="Label" parent="GridContainer2"]
+margin_left = 67.0
+margin_top = 18.0
+margin_right = 67.0
+margin_bottom = 32.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_I" type="Label" parent="GridContainer2"]
+margin_top = 36.0
+margin_right = 63.0
+margin_bottom = 50.0
+text = "Corriente:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Data_I" type="Label" parent="GridContainer2"]
+margin_left = 67.0
+margin_top = 36.0
+margin_right = 67.0
+margin_bottom = 50.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_V" type="Label" parent="GridContainer2"]
+margin_top = 54.0
+margin_right = 63.0
+margin_bottom = 68.0
+text = "Voltaje:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Data_V" type="Label" parent="GridContainer2"]
+margin_left = 67.0
+margin_top = 54.0
+margin_right = 67.0
+margin_bottom = 68.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_LUM1" type="Label" parent="GridContainer2"]
+margin_top = 72.0
+margin_right = 63.0
+margin_bottom = 86.0
+rect_pivot_offset = Vector2( -704, -45 )
+text = "LUM1:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Data_LUM1" type="Label" parent="GridContainer2"]
+margin_left = 67.0
+margin_top = 72.0
+margin_right = 67.0
+margin_bottom = 86.0
+rect_pivot_offset = Vector2( -704, -45 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_LUM2" type="Label" parent="GridContainer2"]
+margin_top = 90.0
+margin_right = 63.0
+margin_bottom = 104.0
+rect_pivot_offset = Vector2( -704, -45 )
+text = "LUM2:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Data_LUM2" type="Label" parent="GridContainer2"]
+margin_left = 67.0
+margin_top = 90.0
+margin_right = 67.0
+margin_bottom = 104.0
+rect_pivot_offset = Vector2( -704, -45 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
 [connection signal="pressed" from="Button2" to="." method="_on_Button2_pressed"]
 [connection signal="pressed" from="Button3" to="." method="_on_Button3_pressed"]
 [connection signal="pressed" from="Button4" to="." method="_on_Button4_pressed"]
+[connection signal="pressed" from="Button5" to="." method="_on_Button5_pressed"]
 [connection signal="item_selected" from="ItemList" to="." method="_on_ItemList_item_selected"]
 [connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]
 [connection signal="request_completed" from="LoginRequest" to="." method="_on_LoginRequest_request_completed"]
 [connection signal="request_completed" from="CustomerRequest" to="." method="_on_CustomRequest_request_completed"]
 [connection signal="request_completed" from="TelemetryRequest" to="." method="_on_TelemetryRequest_request_completed"]
+[connection signal="request_completed" from="AttributesRequest" to="." method="_on_AttributesRequest_request_completed"]
 [connection signal="timeout" from="Timer2" to="." method="_on_Timer2_timeout"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="pressed" from="Timer/CheckButton" to="." method="_on_CheckButton_pressed"]

@@ -4,6 +4,7 @@ onready var http_request := $HTTPRequest
 onready var login_request := $LoginRequest
 onready var customer_request := $CustomerRequest
 onready var telemetry_request := $TelemetryRequest
+onready var attributes_request := $AttributesRequest
 onready var customer_input := $VBoxContainer/LineEdit3
 onready var username_input := $VBoxContainer/LineEdit
 onready var password_input := $VBoxContainer/LineEdit2
@@ -128,3 +129,18 @@ func _on_CheckButton_pressed():
 
 func _on_Timer2_timeout():
 	$Timer/ProgressBar.value=$Timer.time_left
+
+
+func _on_Button5_pressed():
+	var index=$ItemList.get_selected_items()[0]
+	var headers = ["Content-Type: application/json", "X-Authorization: " + token]
+	attributes_request.request("https://demo.thingsboard.io/api/plugins/telemetry/DEVICE/"+devices.result.data[index].id.id+"/values/attributes", headers, true, HTTPClient.METHOD_GET)
+	loading.text="Solicitando Configuracion..."
+
+
+func _on_AttributesRequest_request_completed(result, response_code, headers, body):
+	print(response_code)
+	if response_code == 200:
+		loading.text=""
+		var json = JSON.parse(body.get_string_from_utf8())
+		print(json.result)
