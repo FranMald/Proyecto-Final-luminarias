@@ -75,6 +75,8 @@ func _on_TelemetryRequest_request_completed(result, response_code, headers, body
 		if $Timer/CheckButton.pressed:
 			$Timer.one_shot=true
 			$Timer.start(15)
+			
+		$MeanGauge.value = float(data_temp.text)
 
 func _on_Button_pressed():
 	var query = JSON.print({"username" : username_input.text, "password" : password_input.text})

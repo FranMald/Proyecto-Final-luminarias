@@ -8,6 +8,22 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Label",
+"class": "DynamicLabel",
+"language": "GDScript",
+"path": "res://Gauges/DynamicLabel.gd"
+}, {
+"base": "Control",
+"class": "MeanGauge",
+"language": "GDScript",
+"path": "res://Gauges/Gauge.gd"
+} ]
+_global_script_class_icons={
+"DynamicLabel": "",
+"MeanGauge": ""
+}
+
 [application]
 
 config/name="chart-gd"
