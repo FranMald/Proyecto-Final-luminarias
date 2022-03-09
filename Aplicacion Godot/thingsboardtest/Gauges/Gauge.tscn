@@ -1,0 +1,316 @@
+[gd_scene load_steps=21 format=2]
+
+[ext_resource path="res://Gauges/Gauge.gd" type="Script" id=1]
+[ext_resource path="res://Gauges/GaugeRect.gd" type="Script" id=2]
+[ext_resource path="res://Gauges/GaugeTicks.gd" type="Script" id=3]
+[ext_resource path="res://Gauges/NeedleRect.gd" type="Script" id=4]
+[ext_resource path="res://Assets/fonts/static/RobotoMono-Medium.ttf" type="DynamicFontData" id=5]
+[ext_resource path="res://Assets/fonts/static/RobotoMono-Regular.ttf" type="DynamicFontData" id=6]
+[ext_resource path="res://Gauges/DynamicLabel.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Assets/fonts/static/RobotoMono-Bold.ttf" type="DynamicFontData" id=8]
+[ext_resource path="res://Gauges/DynamicLabel.gd" type="Script" id=9]
+
+[sub_resource type="DynamicFont" id=9]
+resource_local_to_scene = true
+size = 14
+font_data = ExtResource( 5 )
+
+[sub_resource type="Theme" id=8]
+default_font = SubResource( 9 )
+
+[sub_resource type="DynamicFont" id=14]
+resource_local_to_scene = true
+size = 15
+font_data = ExtResource( 8 )
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform vec4 background_color  : hint_color = vec4(0.0,0.0,0.0,1.0);
+uniform vec4 foreground_color  : hint_color = vec4(1.0,1.0,1.0,1.0);
+uniform float starting_angle = 45.0;
+uniform float ending_angle = 315.0;
+uniform float inner_radius = 0.45;
+uniform float outer_radius = 0.5;
+uniform float b_inner_radius = 0.45;
+uniform float b_outer_radius = 0.5;
+uniform float value = 0.5;
+
+void fragment(){
+	float v = value;
+	float start = starting_angle / 360.0;
+	float end = ending_angle / 360.0;
+	float dist = distance(UV, vec2(0.5,0.5));
+	float angle = atan(UV.x - 0.5, -UV.y + 0.5)/6.283185307 + 0.5;
+	
+	COLOR.rgb = background_color.rgb;
+	COLOR.a = smoothstep(dist, dist+0.01, b_outer_radius) - smoothstep(dist-0.01, dist, b_inner_radius);
+	COLOR.a *= background_color.a;
+
+	if (angle < start){
+		COLOR.a = 0.0;
+	}
+	if (angle > end){
+		COLOR.a = 0.0;
+	}
+	v = start*(1.0-v) + end*(v);
+	if (angle < v){
+		COLOR.rgb = foreground_color.rgb*smoothstep(dist, dist+0.01, outer_radius) - smoothstep(dist-0.01, dist, inner_radius);
+		COLOR.a *= foreground_color.a;
+	} 
+	
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+resource_local_to_scene = true
+shader = SubResource( 1 )
+shader_param/background_color = Color( 0, 0, 0, 1 )
+shader_param/foreground_color = Color( 1, 0, 0, 1 )
+shader_param/starting_angle = 45.0
+shader_param/ending_angle = 315.0
+shader_param/inner_radius = 0.43
+shader_param/outer_radius = 0.47
+shader_param/b_inner_radius = 0.42
+shader_param/b_outer_radius = 0.48
+shader_param/value = 1.0
+
+[sub_resource type="Shader" id=4]
+code = "shader_type canvas_item;
+
+uniform float starting_angle = 45.0;
+uniform float ending_angle = 315.0;
+uniform float inner_radius = 0.45;
+uniform float outer_radius = 0.5;
+uniform float sec_inner_radius = 0.475;
+uniform float sec_outer_radius = 0.5;
+uniform float prim_ticks_amount = 10.0;
+uniform float sec_ticks_amount = 30.0;
+uniform float tick_width = 0.03;
+uniform float sec_tick_width = 0.03;
+uniform vec4 tick_fg_color : hint_color = vec4(1.0);
+uniform vec4 tick_bg_color : hint_color = vec4(1.0);
+uniform float value = 0.5;
+
+void fragment(){
+	float v = value;
+	COLOR = tick_bg_color;
+	float start = starting_angle / 360.0;
+	float end = ending_angle / 360.0;
+	float angle = atan(UV.x - 0.5, -UV.y + 0.5)/6.283185307 + 0.5;
+	
+	float dist = distance(UV, vec2(0.5,0.5));
+	
+	
+	v = start*(1.0-v) + end*(v);
+	if (angle < v){
+		COLOR = tick_fg_color;
+	} 
+	
+	COLOR.a = 0.0;
+	float tick_delta = (end - start) / sec_ticks_amount;
+	float tick_angle = fract((angle - start)/tick_delta);
+	
+	if (sec_ticks_amount > 0.0){
+		COLOR.a = 1.0-smoothstep(sec_tick_width / 2.0, sec_tick_width / 2.0+0.001*sec_ticks_amount, tick_angle) + smoothstep(1.0 - sec_tick_width/2.0 - 0.001*sec_ticks_amount, 1.0 - sec_tick_width/2.0 , tick_angle);
+		COLOR.a *= smoothstep(dist, dist+0.01, sec_outer_radius) - smoothstep(dist-0.01, dist, sec_inner_radius);
+	}
+	
+	if (prim_ticks_amount > 0.0){
+		tick_delta = (end - start) / prim_ticks_amount;
+		tick_angle = fract((angle - start)/tick_delta);
+		
+		if (tick_angle < tick_width / 2.0+0.001 * prim_ticks_amount || tick_angle > 1.0 - tick_width/2.0 - 0.001 * prim_ticks_amount){
+			COLOR.a = 1.0-smoothstep(tick_width / 2.0, tick_width / 2.0+0.001 * prim_ticks_amount, tick_angle) + smoothstep(1.0 - tick_width/2.0 - 0.001 * prim_ticks_amount, 1.0 - tick_width/2.0 , tick_angle);
+			COLOR.a *= smoothstep(dist, dist+0.01, outer_radius) - smoothstep(dist-0.01, dist, inner_radius);
+		}
+	}
+	
+	if (angle < start){
+		COLOR.a = 0.0;
+	}
+	if (angle > end){
+		COLOR.a = 0.0;
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id=5]
+resource_local_to_scene = true
+shader = SubResource( 4 )
+shader_param/starting_angle = 45.0
+shader_param/ending_angle = 315.0
+shader_param/inner_radius = 0.345
+shader_param/outer_radius = 0.469
+shader_param/sec_inner_radius = 0.411
+shader_param/sec_outer_radius = 0.468
+shader_param/prim_ticks_amount = 5
+shader_param/sec_ticks_amount = 25
+shader_param/tick_width = 0.01
+shader_param/sec_tick_width = 0.03
+shader_param/tick_fg_color = Color( 1, 1, 1, 1 )
+shader_param/tick_bg_color = Color( 1, 1, 1, 1 )
+shader_param/value = 1.0
+
+[sub_resource type="Shader" id=7]
+code = "shader_type canvas_item;
+
+uniform float start_radius = 5;
+uniform float end_radius = 1;
+uniform vec4 color : hint_color = vec4(0.4, 0.5, 1.0, 1.0);
+uniform vec2 rect_size = vec2(192.0, 192.0);
+
+void fragment(){
+	COLOR = color;
+	float dist = distance(UV, vec2(0.5,UV.y))*rect_size.x;
+	float radius = start_radius * (1.0 - UV.y)/0.5 + end_radius * (UV.y - 0.5)/0.5;
+	if (UV.y < 0.5){
+		dist = distance(UV, vec2(0.5,0.5))*rect_size.x;
+		COLOR.a = 1.0 - smoothstep(start_radius - 1.0, start_radius, dist);
+	}
+	else if (UV.y * rect_size.y > rect_size.y - end_radius) {
+		dist = distance(UV, vec2(0.5,1.0 - end_radius / rect_size.y))*rect_size.y;
+		COLOR.a = 1.0 - smoothstep(end_radius - 1.0, end_radius, dist);
+	}
+	else{
+		COLOR.a = 1.0 - smoothstep(radius - 1.0, radius, dist);
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id=10]
+resource_local_to_scene = true
+shader = SubResource( 7 )
+shader_param/start_radius = 5.0
+shader_param/end_radius = 1.0
+shader_param/color = Color( 0.4, 0.498039, 1, 1 )
+shader_param/rect_size = Vector2( 192, 192 )
+
+[sub_resource type="DynamicFont" id=12]
+resource_local_to_scene = true
+size = 14
+font_data = ExtResource( 6 )
+
+[sub_resource type="DynamicFont" id=13]
+resource_local_to_scene = true
+size = 14
+font_data = ExtResource( 6 )
+
+[node name="MeanGauge" type="Control"]
+anchor_right = 0.5
+margin_right = -6.0
+margin_bottom = 256.0
+theme = SubResource( 8 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+value = 1.0
+unit = "[unit]"
+variable_name = "Variable"
+smooth = 0.5
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.156863, 0.156863, 0.156863, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Name" parent="HBoxContainer" instance=ExtResource( 7 )]
+anchor_left = 0.09375
+anchor_right = 0.90625
+anchor_bottom = 0.09375
+margin_bottom = 0.0
+custom_fonts/font = SubResource( 14 )
+text = "Variable"
+align = 1
+valign = 1
+
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer"]
+material = SubResource( 2 )
+margin_left = 49.0
+margin_top = 22.6274
+margin_right = 305.0
+margin_bottom = 278.627
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Labels" type="Control" parent="HBoxContainer/ColorRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GaugeTicks" type="ColorRect" parent="HBoxContainer/ColorRect"]
+material = SubResource( 5 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NeedleRect" type="ColorRect" parent="HBoxContainer/ColorRect"]
+material = SubResource( 10 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_rotation = 315.0
+rect_pivot_offset = Vector2( 128, 128 )
+color = Color( 1, 1, 1, 0 )
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="HBoxContainer/ColorRect"]
+anchor_left = 0.15625
+anchor_top = 0.566406
+anchor_right = 0.84375
+anchor_bottom = 0.652344
+grow_horizontal = 2
+grow_vertical = 2
+custom_fonts/font = SubResource( 12 )
+text = "1.00"
+align = 1
+valign = 1
+script = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Unit" type="Label" parent="HBoxContainer/ColorRect/Label"]
+anchor_left = -0.25
+anchor_top = 0.818182
+anchor_right = 1.25
+anchor_bottom = 1.81818
+grow_horizontal = 2
+grow_vertical = 2
+custom_fonts/font = SubResource( 13 )
+text = "[unit]"
+align = 1
+valign = 1
+script = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Tween" type="Tween" parent="."]
+
+[connection signal="resized" from="HBoxContainer" to="HBoxContainer/ColorRect" method="_on_HBoxContainer_resized"]
+[connection signal="resized" from="HBoxContainer/ColorRect" to="." method="_on_ColorRect_resized"]
+[connection signal="resized" from="HBoxContainer/ColorRect" to="HBoxContainer/ColorRect/NeedleRect" method="_on_ColorRect_resized"]
+[connection signal="resized" from="HBoxContainer/ColorRect/Label" to="HBoxContainer/ColorRect/Label" method="_on_DynamicLabel_resized"]
+[connection signal="resized" from="HBoxContainer/ColorRect/Label/Unit" to="HBoxContainer/ColorRect/Label/Unit" method="_on_DynamicLabel_resized"]
