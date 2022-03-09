@@ -16,6 +16,12 @@ onready var data_lum1 := $GridContainer/Data_LUM1
 onready var data_lum2 := $GridContainer/Data_LUM2
 onready var loading := $Loading
 
+onready var temp_gauge := $MeanGauge
+onready var v_gauge := $MeanGauge2
+onready var lum1_gauge := $MeanGauge3
+onready var hum_gauge := $MeanGauge4
+onready var i_gauge := $MeanGauge5
+onready var lum2_gauge := $MeanGauge6
 var devices
 
 var token := ""
@@ -66,17 +72,15 @@ func _on_TelemetryRequest_request_completed(result, response_code, headers, body
 		loading.text=""
 		var json = JSON.parse(body.get_string_from_utf8())
 		print(json.result)
-		data_hum.text=json.result.HUM[0].value
-		data_temp.text=json.result.TEMP[0].value
-		data_i.text=json.result.I[0].value
-		data_v.text=json.result.V[0].value
-		data_lum1.text=json.result.LUM1[0].value
-		data_lum2.text=json.result.LUM2[0].value
+		temp_gauge.value = float(json.result.TEMP[0].value)
+		v_gauge.value = float(json.result.V[0].value)
+		lum1_gauge.value = float(json.result.LUM1[0].value)
+		hum_gauge.value = float(json.result.HUM[0].value)
+		i_gauge.value = float(json.result.I[0].value)
+		lum2_gauge.value = float(json.result.LUM2[0].value)
 		if $Timer/CheckButton.pressed:
 			$Timer.one_shot=true
 			$Timer.start(15)
-			
-		$MeanGauge.value = float(data_temp.text)
 
 func _on_Button_pressed():
 	var query = JSON.print({"username" : username_input.text, "password" : password_input.text})

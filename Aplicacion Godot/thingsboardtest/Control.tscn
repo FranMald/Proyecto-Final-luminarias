@@ -446,14 +446,70 @@ __meta__ = {
 }
 
 [node name="MeanGauge" parent="." instance=ExtResource( 2 )]
-margin_left = 156.0
-margin_top = 357.0
-margin_right = 150.0
-margin_bottom = 613.0
+margin_left = 29.0
+margin_top = 352.0
+margin_right = -115.0
+margin_bottom = 585.0
+rect_pivot_offset = Vector2( 211, 138 )
 value = 0.0
 max_value = 100.0
 unit = "[°C]"
 variable_name = "Temperatura"
+
+[node name="MeanGauge2" parent="." instance=ExtResource( 2 )]
+margin_left = 250.0
+margin_top = 352.0
+margin_right = 106.0
+margin_bottom = 585.0
+rect_pivot_offset = Vector2( 211, 138 )
+value = 0.0
+max_value = 50.0
+unit = "[V]"
+variable_name = "Voltaje"
+
+[node name="MeanGauge3" parent="." instance=ExtResource( 2 )]
+margin_left = 471.0
+margin_top = 352.0
+margin_right = 327.0
+margin_bottom = 585.0
+rect_pivot_offset = Vector2( 211, 138 )
+value = 0.0
+max_value = 1000.0
+unit = "[Lux]"
+variable_name = "Luz (IN)"
+
+[node name="MeanGauge4" parent="." instance=ExtResource( 2 )]
+margin_left = 29.0
+margin_top = 590.0
+margin_right = -115.0
+margin_bottom = 823.0
+rect_pivot_offset = Vector2( 211, 138 )
+value = 0.0
+max_value = 100.0
+unit = "[%]"
+variable_name = "Humedad"
+
+[node name="MeanGauge5" parent="." instance=ExtResource( 2 )]
+margin_left = 250.0
+margin_top = 590.0
+margin_right = 106.0
+margin_bottom = 823.0
+rect_pivot_offset = Vector2( 211, 138 )
+value = 0.0
+max_value = 8.0
+unit = "[A]"
+variable_name = "Corriente"
+
+[node name="MeanGauge6" parent="." instance=ExtResource( 2 )]
+margin_left = 471.0
+margin_top = 590.0
+margin_right = 327.0
+margin_bottom = 823.0
+rect_pivot_offset = Vector2( 211, 138 )
+value = 0.0
+max_value = 1000.0
+unit = "[Lux]"
+variable_name = "Luz (OUT)"
 
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
 [connection signal="pressed" from="Button2" to="." method="_on_Button2_pressed"]
