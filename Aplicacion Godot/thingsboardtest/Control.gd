@@ -1,5 +1,6 @@
 extends Control
 
+onready var provision_request := $ProvisionRequest
 onready var http_request := $HTTPRequest
 onready var login_request := $LoginRequest
 onready var customer_request := $CustomerRequest
@@ -150,3 +151,15 @@ func _on_AttributesRequest_request_completed(result, response_code, headers, bod
 		loading.text=""
 		var json = JSON.parse(body.get_string_from_utf8())
 		print(json.result)
+
+
+func _on_Button6_pressed():
+	var headers = ["Content-Type: application/json", "X-Authorization: " + token]
+	var request_data = '{"deviceName": "DEVICE_NAME","provisionDeviceKey": "444oijxepojfgh3n0oag","provisionDeviceSecret": "2peqabgnq5zkfyucnrp5"}'
+	provision_request.request("https://demo.thingsboard.io/api/v1/provision",headers,true,HTTPClient.METHOD_GET, request_data)
+
+
+func _on_ProvisionRequest_request_completed(result, response_code, headers, body):
+	print(response_code)
+	if response_code == 200:
+		print (result)

@@ -149,6 +149,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="ProvisionRequest" type="HTTPRequest" parent="."]
+
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
 
 [node name="LoginRequest" type="HTTPRequest" parent="."]
@@ -511,12 +513,24 @@ max_value = 1000.0
 unit = "[Lux]"
 variable_name = "Luz (OUT)"
 
+[node name="Button6" type="Button" parent="."]
+margin_left = 47.0
+margin_top = 859.0
+margin_right = 166.0
+margin_bottom = 905.0
+theme = SubResource( 4 )
+text = "Device Provision"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
 [connection signal="pressed" from="Button2" to="." method="_on_Button2_pressed"]
 [connection signal="pressed" from="Button3" to="." method="_on_Button3_pressed"]
 [connection signal="pressed" from="Button4" to="." method="_on_Button4_pressed"]
 [connection signal="pressed" from="Button5" to="." method="_on_Button5_pressed"]
 [connection signal="item_selected" from="ItemList" to="." method="_on_ItemList_item_selected"]
+[connection signal="request_completed" from="ProvisionRequest" to="." method="_on_ProvisionRequest_request_completed"]
 [connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]
 [connection signal="request_completed" from="LoginRequest" to="." method="_on_LoginRequest_request_completed"]
 [connection signal="request_completed" from="CustomerRequest" to="." method="_on_CustomRequest_request_completed"]
@@ -525,3 +539,4 @@ variable_name = "Luz (OUT)"
 [connection signal="timeout" from="Timer2" to="." method="_on_Timer2_timeout"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="pressed" from="Timer/CheckButton" to="." method="_on_CheckButton_pressed"]
+[connection signal="pressed" from="Button6" to="." method="_on_Button6_pressed"]
