@@ -154,12 +154,15 @@ func _on_AttributesRequest_request_completed(result, response_code, headers, bod
 
 
 func _on_Button6_pressed():
-	var headers = ["Content-Type: application/json", "X-Authorization: " + token]
-	var request_data = '{"deviceName": "DEVICE_NAME","provisionDeviceKey": "444oijxepojfgh3n0oag","provisionDeviceSecret": "2peqabgnq5zkfyucnrp5"}'
-	provision_request.request("https://demo.thingsboard.io/api/v1/provision",headers,true,HTTPClient.METHOD_GET, request_data)
+	var headers = ["Configuracion"]
+	var request_data = '{"SSID": "prueba","pword": "coso"}'
+	provision_request.request("http://192.168.0.17",headers,true,HTTPClient.METHOD_GET, request_data)
 
 
 func _on_ProvisionRequest_request_completed(result, response_code, headers, body):
 	print(response_code)
 	if response_code == 200:
+		print (headers)
 		print (result)
+		print (str(body))
+		
