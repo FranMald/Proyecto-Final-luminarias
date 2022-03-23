@@ -1,4 +1,5 @@
 from wifi import do_connect
+import ujson
 
 do_connect("DAVITELWIFI34778","Ja5Achoh")
 
@@ -15,9 +16,13 @@ while True:
     request1 = str(conn.recv(1024))
     print(request1)
     request=request1[2:-1].split("\\r\\n")
+    conf=ujson.loads(request[-1])
     print(request[-1])
     conn.send('HTTP/1.1 200 OK\n')
     conn.send('Configuracion\n')
     conn.send('Connection: close\n\n')
     conn.sendall("holo")
     conn.close()
+    #
+    
+    

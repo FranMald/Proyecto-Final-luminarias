@@ -17,6 +17,16 @@ onready var data_lum1 := $GridContainer/Data_LUM1
 onready var data_lum2 := $GridContainer/Data_LUM2
 onready var loading := $Loading
 
+onready var SSID_input := $VBoxContainer2/LineEdit
+onready var PWORD_input := $VBoxContainer2/LineEdit2
+onready var URL_input := $VBoxContainer2/LineEdit3
+onready var DEVTOKEN_input := $VBoxContainer2/LineEdit4
+onready var NAME_input := $VBoxContainer2/LineEdit5
+onready var DEVTOKEN_label := $VBoxContainer2/Label4
+onready var Provision_check := $VBoxContainer2/CheckButton
+
+onready var ESTADO:= $ESTADO
+
 onready var temp_gauge := $MeanGauge
 onready var v_gauge := $MeanGauge2
 onready var lum1_gauge := $MeanGauge3
@@ -154,15 +164,46 @@ func _on_AttributesRequest_request_completed(result, response_code, headers, bod
 
 
 func _on_Button6_pressed():
-	var headers = ["Configuracion"]
-	var request_data = '{"SSID": "prueba","pword": "coso"}'
-	provision_request.request("http://192.168.0.17",headers,true,HTTPClient.METHOD_GET, request_data)
+	if not (SSID_input.text=="" or PWORD_input.text=="" or URL_input.text==""  or (DEVTOKEN_input.editable and DEVTOKEN_input.text=="")):
+		print("SI")
+		var headers = ["Configuracion"]
+		var request_data = '{"SSID": "'+SSID_input.text+'","PWORD": "'+ PWORD_input.text +'","URL": "'+URL_input.text+'","TOKEN": "'+DEVTOKEN_input.text+'","NAME": "'+NAME_input.text+'"}'
+		print (request_data)
+		#provision_request.request("http://192.168.0.17",headers,true,HTTPClient.METHOD_GET, request_data)
+		ESTADO.text="Esperando Respuesta de Dispositivo"
+		provision_request.request("http://192.168.4.1",headers,true,HTTPClient.METHOD_GET, request_data)
+	else:
+		print("Cargar Datos necesarios")
+	
 
 
 func _on_ProvisionRequest_request_completed(result, response_code, headers, body):
 	print(response_code)
 	if response_code == 200:
+		ESTADO.text="OK"
 		print (headers)
 		print (result)
 		print (str(body))
 		
+
+
+func _on_CheckButton2_pressed():
+	if Provision_check.pressed:
+		DEVTOKEN_input.editable=false
+		DEVTOKEN_input.text="provision"
+		NAME_input.editable=true
+		NAME_input.text=""
+	else:
+		DEVTOKEN_input.editable=true
+		DEVTOKEN_input.text=""
+		NAME_input.editable=false
+		NAME_input.text=""
+
+
+
+func _on_Button7_pressed():
+	var headers = ["Configuracion"]
+	var request_data = '{"command": "reset"}'
+	ESTADO.text="Esperando Respuesta de Dispositivo"
+	#provision_request.request("http://192.168.0.17",headers,true,HTTPClient.METHOD_GET, request_data)
+	provision_request.request("http://192.168.4.1",headers,true,HTTPClient.METHOD_GET, request_data)

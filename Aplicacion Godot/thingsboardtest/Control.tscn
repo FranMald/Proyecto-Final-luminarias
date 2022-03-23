@@ -29,9 +29,10 @@ __meta__ = {
 
 [node name="VBoxContainer" type="GridContainer" parent="."]
 anchor_right = 0.5
-margin_left = 43.0
-margin_top = 29.0
-margin_bottom = 109.0
+margin_left = 40.0
+margin_top = 24.0
+margin_right = -3.0
+margin_bottom = 104.0
 columns = 2
 __meta__ = {
 "_edit_use_anchors_": false
@@ -514,12 +515,143 @@ unit = "[Lux]"
 variable_name = "Luz (OUT)"
 
 [node name="Button6" type="Button" parent="."]
-margin_left = 47.0
-margin_top = 859.0
-margin_right = 166.0
-margin_bottom = 905.0
+margin_left = 30.0
+margin_top = 836.0
+margin_right = 171.0
+margin_bottom = 882.0
 theme = SubResource( 4 )
+text = "Cargar Configuracion"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer2" type="GridContainer" parent="."]
+anchor_right = 0.5
+margin_left = 304.0
+margin_top = 843.0
+margin_right = 261.0
+margin_bottom = 995.0
+columns = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="VBoxContainer2"]
+margin_top = 5.0
+margin_right = 107.0
+margin_bottom = 19.0
+text = "SSID"
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer2"]
+margin_left = 111.0
+margin_right = 317.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+
+[node name="Label2" type="Label" parent="VBoxContainer2"]
+margin_top = 33.0
+margin_right = 107.0
+margin_bottom = 47.0
+rect_pivot_offset = Vector2( 582, 49 )
+text = "Contraseña Wifi"
+
+[node name="LineEdit2" type="LineEdit" parent="VBoxContainer2"]
+margin_left = 111.0
+margin_top = 28.0
+margin_right = 317.0
+margin_bottom = 52.0
+rect_pivot_offset = Vector2( 507, 54 )
+size_flags_horizontal = 3
+secret = true
+
+[node name="Label3" type="Label" parent="VBoxContainer2"]
+margin_top = 61.0
+margin_right = 107.0
+margin_bottom = 75.0
+rect_pivot_offset = Vector2( 582, 49 )
+text = "URL MQTT"
+
+[node name="LineEdit3" type="LineEdit" parent="VBoxContainer2"]
+margin_left = 111.0
+margin_top = 56.0
+margin_right = 317.0
+margin_bottom = 80.0
+rect_pivot_offset = Vector2( 507, 54 )
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label5" type="Label" parent="VBoxContainer2"]
+margin_top = 97.0
+margin_right = 107.0
+margin_bottom = 111.0
+rect_pivot_offset = Vector2( 582, 49 )
 text = "Device Provision"
+
+[node name="CheckButton" type="CheckButton" parent="VBoxContainer2"]
+margin_left = 111.0
+margin_top = 84.0
+margin_right = 317.0
+margin_bottom = 124.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label4" type="Label" parent="VBoxContainer2"]
+margin_top = 133.0
+margin_right = 107.0
+margin_bottom = 147.0
+rect_pivot_offset = Vector2( 582, 49 )
+text = "Device Token"
+
+[node name="LineEdit4" type="LineEdit" parent="VBoxContainer2"]
+margin_left = 111.0
+margin_top = 128.0
+margin_right = 317.0
+margin_bottom = 152.0
+rect_pivot_offset = Vector2( 507, 54 )
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label6" type="Label" parent="VBoxContainer2"]
+margin_top = 161.0
+margin_right = 107.0
+margin_bottom = 175.0
+rect_pivot_offset = Vector2( 582, 49 )
+text = "Nombre"
+
+[node name="LineEdit5" type="LineEdit" parent="VBoxContainer2"]
+margin_left = 111.0
+margin_top = 156.0
+margin_right = 317.0
+margin_bottom = 180.0
+rect_pivot_offset = Vector2( 507, 54 )
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button7" type="Button" parent="."]
+margin_left = 30.0
+margin_top = 894.0
+margin_right = 171.0
+margin_bottom = 940.0
+theme = SubResource( 4 )
+text = "Resetear"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ESTADO" type="Label" parent="."]
+margin_left = 25.0
+margin_top = 956.0
+margin_right = 132.0
+margin_bottom = 970.0
+rect_pivot_offset = Vector2( 582, 49 )
+text = "ESTADO"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -540,3 +672,5 @@ __meta__ = {
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="pressed" from="Timer/CheckButton" to="." method="_on_CheckButton_pressed"]
 [connection signal="pressed" from="Button6" to="." method="_on_Button6_pressed"]
+[connection signal="pressed" from="VBoxContainer2/CheckButton" to="." method="_on_CheckButton2_pressed"]
+[connection signal="pressed" from="Button7" to="." method="_on_Button7_pressed"]
