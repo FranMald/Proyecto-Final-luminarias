@@ -167,7 +167,7 @@ func _on_Button6_pressed():
 	if not (SSID_input.text=="" or PWORD_input.text=="" or URL_input.text==""  or (DEVTOKEN_input.editable and DEVTOKEN_input.text=="")):
 		print("SI")
 		var headers = ["Configuracion"]
-		var request_data = '{"SSID": "'+SSID_input.text+'","PWORD": "'+ PWORD_input.text +'","URL": "'+URL_input.text+'","TOKEN": "'+DEVTOKEN_input.text+'","NAME": "'+NAME_input.text+'"}'
+		var request_data = '{"wifi_ssid": "'+SSID_input.text+'","wifi_pword": "'+ PWORD_input.text +'","mqtt_url": "'+URL_input.text+'","mqtt_user": "'+DEVTOKEN_input.text+'","NAME": "'+NAME_input.text+'"}'
 		print (request_data)
 		#provision_request.request("http://192.168.0.17",headers,true,HTTPClient.METHOD_GET, request_data)
 		ESTADO.text="Esperando Respuesta de Dispositivo"
