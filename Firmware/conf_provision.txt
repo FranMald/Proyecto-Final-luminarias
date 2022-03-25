@@ -1,0 +1,1 @@
+{"provisionDeviceKey": "444oijxepojfgh3n0oag","provisionDeviceSecret": "2peqabgnq5zkfyucnrp5"}

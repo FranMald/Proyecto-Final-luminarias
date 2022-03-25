@@ -1,0 +1,1 @@
+{"Scan Rate": "10000", "PID_state": "off", "Scan status": "on", "Light status": "on", "Muestras_AVG": "100", "PWM": "193"}
