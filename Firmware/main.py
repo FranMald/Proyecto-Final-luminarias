@@ -10,8 +10,6 @@ from ina226 import INA226
 import esp
 from PID import PID
 
-
-#rutina que se ejecuta cuando se detecta un nuevo mensaje en un topic suscripto
 def response_cb(topic_cb, msg):
     global TOKEN
     response=ujson.loads(msg)
@@ -26,20 +24,17 @@ def sub_cb(topic_cb, msg):
     print(topic_cb)
     topic_last=topic_cb
     ATTR=ujson.loads(msg)
-    #respuesta a  la consuta de PWM desde le servidor
     if ATTR.get('method')=='getPWM':
         topic_last=str(topic_last)[2:-1]
         topic_last=topic_last.replace("request","response")
         c.publish(topic_last,str(PWM))
-    #respuesta a  la consuta de estado de escaneo desde el servidor
     if ATTR.get('method')=='getScanStat':
         topic_last=str(topic_last)[2:-1]
         topic_last=topic_last.replace("request","response")
         if scan_state=='on':
             c.publish(topic_last,'true')
         if scan_state=='off':
-            c.publish(topic_last,'false')
-    #respuesta a  la consuta de estado de habilitaicon del controlador de leds desde el servidor        
+            c.publish(topic_last,'false')     
     if ATTR.get('method')=='getLightStat':
         topic_last=str(topic_last)[2:-1]
         topic_last=topic_last.replace("request","response")
@@ -47,7 +42,6 @@ def sub_cb(topic_cb, msg):
             c.publish(topic_last,'true')
         if light_state=='off':
             c.publish(topic_last,'false')
-    #respuesta a la consulta de estado del PID
     if ATTR.get('method')=='getPIDStat':
         topic_last=str(topic_last)[2:-1]
         topic_last=topic_last.replace("request","response")
@@ -55,12 +49,10 @@ def sub_cb(topic_cb, msg):
             c.publish(topic_last,'true')
         if PID_state=='off':
             c.publish(topic_last,'false')
-    #ejecucion del comando de seteo de PWM
     if ATTR.get('method')=='setPWM':
         PWM=int(ATTR.get('params'))
         ctrl_PWM.duty(PWM)
         print(PWM)
-    #ejecucion del comando de SCAN ON/OFF   
     if ATTR.get('method')=='setScanStat':                        
         if ATTR.get('params')==True:
             tim.deinit()
@@ -68,8 +60,7 @@ def sub_cb(topic_cb, msg):
             scan_state='on'
         if ATTR.get('params')==False:
             tim.deinit()
-            scan_state='off'
-    #ejecucion del comando de LIGHT ON/OFF         
+            scan_state='off'       
     if ATTR.get('method')=='setLightStat':                        
         if ATTR.get('params')==True:
             pin_EN.on()
@@ -77,34 +68,27 @@ def sub_cb(topic_cb, msg):
         if ATTR.get('params')==False:
             pin_EN.off()
             light_state='off'  
-    #ejecucion del comando de PID ON/OFF
     if ATTR.get('method')=='setPIDStat':                        
         if ATTR.get('params')==True:
             PID_state='on' 
         if ATTR.get('params')==False:
             PID_state='off'
-    #modificacion de tiempo de escaneo
     if ATTR.get('Scan Rate')!=None:                        
         scan_rate=int(ATTR.get('Scan Rate'))
         if scan_state=='on':
-            tim.init(period=scan_rate,callback=Scan_callback)        
-    #modificacion de muestras para promedio    
-    if ATTR.get('Muestras_AVG')!=None:    
-        #recupera el valor enviado                    
+            tim.init(period=scan_rate,callback=Scan_callback)         
+    if ATTR.get('Muestras_AVG')!=None:                      
         AVG=int(ATTR.get('Muestras_AVG'))
         SUM=[0,0,0,0,0,0]
-        #se promedia todo el contenido del buffer de muestras actuales y se ingresa ese valor al primer elemento del nuevo buffer, borrando las anteriores
         for muestra in muestras:
             for i in range(0,5):
                 SUM[i]=float(SUM[i])+float(muestra[i])
         for i in range(0,5):
             SUM[i]=SUM[i]/len(muestras)               
         muestras=[SUM]
-    #otra manera para modificar el PWM    
     if ATTR.get('PWM')!=None:                         
         PWM=int(ATTR.get('PWM'))
         ctrl_PWM.duty(PWM)
-    #se modifica el archivo con los nuevos parametros    
     f = open('conf_ctrl.txt', 'r')
     config_old=ujson.loads(f.read())
     f.close()
@@ -119,7 +103,6 @@ def sub_cb(topic_cb, msg):
     f = open('conf_ctrl.txt', 'w')
     f.write(config_str)
     f.close()
-    #se publica los atriubutos mas recientes
     c.publish(attributes,config_str)
     INH=1
     tim2.init(period=100,callback=Sub_timer2_cb)
@@ -128,7 +111,6 @@ def Sub_timer2_cb(timer):
     global d,c,values,Pin_STS,tags,x,muestras,INH,ctrl_PWM
     if INH:
         tim2.deinit()
-        #medicion de temperatura y humedad
         try:                        
             d.measure()
             values[1]=d.temperature()
@@ -136,27 +118,18 @@ def Sub_timer2_cb(timer):
         except:
             values[1]=values[1]
             values[2]=values[2]
-        
-        #medicion de luminosidad    
         values[5]=int.from_bytes(i2c.readfrom(35, 2),"big")/1.2  
         values[6]=int.from_bytes(i2c.readfrom(92, 2),"big")/1.2    
-        #medicion de tension y corriente
         values[3]=ina.bus_voltage
         values[4]=ina.current
-        
         if PID_state=="on":
             values[7]=pid(int(values[5]-values[6]))
-            #print(values[7],values[5],values[6],values[5]-values[6])
             ctrl_PWM.duty(int(values[7]))
         else:
             values[7]=PWM
-        #se agrega la medicion actual al buffer
         muestras.append([values[1],values[2],values[3],values[4],values[5],values[6],values[7]])
-        #si el largo del buffer supera el numero de muestras establecido se elimina el primer elemento
         if len(muestras) > AVG:
             muestras=muestras[1:]  
-
-        #se verifica si se recibio algun mensaje por los topics
         try:
             c.check_msg()
         except:
@@ -169,8 +142,6 @@ def Scan_callback(timer):
     tim.init(period=scan_rate,callback=Scan_callback)     
     values[0]=utime.time()
     SUM=[0,0,0,0,0,0,0]
-    #calculo del promedio de todas las muestras del buffer
-    print(len(muestras))
     for muestra in muestras:
         for i in range(0,len(SUM)):
             SUM[i]=SUM[i]+muestra[i]
@@ -185,11 +156,9 @@ def Scan_callback(timer):
     values[6]=SUM[5]
     values[7]=SUM[6]
     values[8]=len(muestras)
-    #parseo json
     for i in range(0,len(tags)):
         dict[tags[i]] = values[i]
         OUT=ujson.dumps(dict)
-    #publica en topic
     muestras=[]    
     try:
         c.publish(topic_tm, OUT)
@@ -200,7 +169,6 @@ def Scan_callback(timer):
             machine.reset()
     tim2.init(period=100,callback=Sub_timer2_cb)
     
-#si no encontro red y no se lo configuro despues de 1 min se resetea
 def Reset_callback(timer): 
     machine.reset()
     
