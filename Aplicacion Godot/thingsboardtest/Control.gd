@@ -162,48 +162,5 @@ func _on_AttributesRequest_request_completed(result, response_code, headers, bod
 		var json = JSON.parse(body.get_string_from_utf8())
 		print(json.result)
 
-
-func _on_Button6_pressed():
-	if not (SSID_input.text=="" or PWORD_input.text=="" or URL_input.text==""  or (DEVTOKEN_input.editable and DEVTOKEN_input.text=="")):
-		print("SI")
-		var headers = ["Configuracion"]
-		var request_data = '{"wifi_ssid": "'+SSID_input.text+'","wifi_pword": "'+ PWORD_input.text +'","mqtt_url": "'+URL_input.text+'","mqtt_user": "'+DEVTOKEN_input.text+'","NAME": "'+NAME_input.text+'"}'
-		print (request_data)
-		#provision_request.request("http://192.168.0.17",headers,true,HTTPClient.METHOD_GET, request_data)
-		ESTADO.text="Esperando Respuesta de Dispositivo"
-		provision_request.request("http://192.168.4.1",headers,true,HTTPClient.METHOD_GET, request_data)
-	else:
-		print("Cargar Datos necesarios")
-	
-
-
-func _on_ProvisionRequest_request_completed(result, response_code, headers, body):
-	print(response_code)
-	if response_code == 200:
-		ESTADO.text="OK"
-		print (headers)
-		print (result)
-		print (str(body))
-		
-
-
-func _on_CheckButton2_pressed():
-	if Provision_check.pressed:
-		DEVTOKEN_input.editable=false
-		DEVTOKEN_input.text="provision"
-		NAME_input.editable=true
-		NAME_input.text=""
-	else:
-		DEVTOKEN_input.editable=true
-		DEVTOKEN_input.text=""
-		NAME_input.editable=false
-		NAME_input.text=""
-
-
-
-func _on_Button7_pressed():
-	var headers = ["Configuracion"]
-	var request_data = '{"command": "reset"}'
-	ESTADO.text="Esperando Respuesta de Dispositivo"
-	#provision_request.request("http://192.168.0.17",headers,true,HTTPClient.METHOD_GET, request_data)
-	provision_request.request("http://192.168.4.1",headers,true,HTTPClient.METHOD_GET, request_data)
+func _on_Back_pressed():
+	get_tree().change_scene_to(load('res://inicio.tscn'))
