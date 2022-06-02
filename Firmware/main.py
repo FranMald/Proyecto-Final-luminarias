@@ -15,6 +15,8 @@ def response_cb(topic_cb, msg):
     response=ujson.loads(msg)
     if response.get('status')=="SUCCESS":
         TOKEN=response.get('credentialsValue')
+    else:
+    	TOKEN=""
 
 def sub_cb(topic_cb, msg):
     global tim,tim2, PWM,light_state,scan_state,scan_rate,AVG,muestras,SUM,ATTR,topic_last,INH,PID_state,TOKEN
@@ -245,10 +247,13 @@ def abrirCONF():
                 cp.publish("/provision/request",ujson.dumps(PROVISION_REQUEST))
                 cp.wait_msg()
                 print(TOKEN)
-                net_conf['mqtt_user']=TOKEN
-                f = open('conf_net.txt','w')
-                f.write(ujson.dumps(net_conf))
-                f.close() 
+                if TOKEN != "":
+                	net_conf['mqtt_user']=TOKEN
+                	f = open('conf_net.txt','w')
+                	f.write(ujson.dumps(net_conf))
+                	f.close() 
+                else:
+                	#borrar conf_net.txt
             machine.reset()
 #--------------- comienzo del programa----------------------
     
