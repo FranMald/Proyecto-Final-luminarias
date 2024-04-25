@@ -27,12 +27,13 @@ _global_script_class_icons={
 [application]
 
 config/name="chart-gd"
-run/main_scene="res://Control.tscn"
+run/main_scene="res://inicio.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
 ECUtilities="*res://addons/easy_charts/utilities/scripts/ec_utilities.gd"
+Global="*res://global.gd"
 
 [display]
 

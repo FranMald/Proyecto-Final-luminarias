@@ -38,80 +38,19 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="VBoxContainer"]
-margin_top = 5.0
-margin_right = 71.0
-margin_bottom = 19.0
-text = "Usuario"
-
-[node name="LineEdit" type="LineEdit" parent="VBoxContainer"]
-margin_left = 75.0
-margin_right = 317.0
-margin_bottom = 24.0
-size_flags_horizontal = 3
-
-[node name="Label2" type="Label" parent="VBoxContainer"]
-margin_top = 33.0
-margin_right = 71.0
-margin_bottom = 47.0
-rect_pivot_offset = Vector2( 582, 49 )
-text = "Contraseña"
-
-[node name="LineEdit2" type="LineEdit" parent="VBoxContainer"]
-margin_left = 75.0
-margin_top = 28.0
-margin_right = 317.0
-margin_bottom = 52.0
-rect_pivot_offset = Vector2( 507, 54 )
-size_flags_horizontal = 3
-secret = true
-
 [node name="Label3" type="Label" parent="VBoxContainer"]
-margin_top = 61.0
-margin_right = 71.0
-margin_bottom = 75.0
+margin_top = 5.0
+margin_right = 62.0
+margin_bottom = 19.0
 rect_pivot_offset = Vector2( 582, 49 )
 text = "Costumer"
 
 [node name="LineEdit3" type="LineEdit" parent="VBoxContainer"]
-margin_left = 75.0
-margin_top = 56.0
+margin_left = 66.0
 margin_right = 317.0
-margin_bottom = 80.0
+margin_bottom = 24.0
 rect_pivot_offset = Vector2( 507, 54 )
 size_flags_horizontal = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Button" type="Button" parent="."]
-margin_left = 49.0
-margin_top = 153.0
-margin_right = 160.0
-margin_bottom = 173.0
-text = "Iniciar"
-__meta__ = {
-"_edit_use_anchors_": true
-}
-
-[node name="Button2" type="Button" parent="."]
-anchor_right = 4.23855e-08
-margin_left = 49.0
-margin_top = 129.0
-margin_right = 162.0
-margin_bottom = 149.0
-text = "Completar login"
-__meta__ = {
-"_edit_use_anchors_": true
-}
-
-[node name="Button3" type="Button" parent="."]
-margin_left = 167.0
-margin_top = 128.0
-margin_right = 251.0
-margin_bottom = 174.0
-theme = SubResource( 4 )
-text = "DEBUG"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -119,10 +58,10 @@ __meta__ = {
 [node name="Button4" type="Button" parent="."]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = 117.0
-margin_top = 24.0
-margin_right = 180.0
-margin_bottom = 45.0
+margin_left = 15.0
+margin_top = 25.0
+margin_right = 78.0
+margin_bottom = 46.0
 theme = SubResource( 4 )
 disabled = true
 text = "Refresh"
@@ -131,6 +70,7 @@ __meta__ = {
 }
 
 [node name="Button5" type="Button" parent="."]
+visible = false
 margin_left = 258.0
 margin_top = 125.0
 margin_right = 342.0
@@ -153,6 +93,8 @@ __meta__ = {
 
 [node name="ProvisionRequest" type="HTTPRequest" parent="."]
 
+[node name="ProfileRequest" type="HTTPRequest" parent="."]
+
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
 
 [node name="LoginRequest" type="HTTPRequest" parent="."]
@@ -163,133 +105,11 @@ __meta__ = {
 
 [node name="AttributesRequest" type="HTTPRequest" parent="."]
 
-[node name="GridContainer" type="GridContainer" parent="."]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = 26.0
-margin_top = 23.0
-margin_right = 155.0
-margin_bottom = 127.0
-columns = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label_hum" type="Label" parent="GridContainer"]
-margin_right = 63.0
-margin_bottom = 14.0
-text = "HUM:"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Data_hum" type="Label" parent="GridContainer"]
-margin_left = 67.0
-margin_right = 67.0
-margin_bottom = 14.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label_temp" type="Label" parent="GridContainer"]
-margin_top = 18.0
-margin_right = 63.0
-margin_bottom = 32.0
-text = "TEMP:"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Data_temp" type="Label" parent="GridContainer"]
-margin_left = 67.0
-margin_top = 18.0
-margin_right = 67.0
-margin_bottom = 32.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label_I" type="Label" parent="GridContainer"]
-margin_top = 36.0
-margin_right = 63.0
-margin_bottom = 50.0
-text = "Corriente:"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Data_I" type="Label" parent="GridContainer"]
-margin_left = 67.0
-margin_top = 36.0
-margin_right = 67.0
-margin_bottom = 50.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label_V" type="Label" parent="GridContainer"]
-margin_top = 54.0
-margin_right = 63.0
-margin_bottom = 68.0
-text = "Voltaje:"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Data_V" type="Label" parent="GridContainer"]
-margin_left = 67.0
-margin_top = 54.0
-margin_right = 67.0
-margin_bottom = 68.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label_LUM1" type="Label" parent="GridContainer"]
-margin_top = 72.0
-margin_right = 63.0
-margin_bottom = 86.0
-rect_pivot_offset = Vector2( -704, -45 )
-text = "LUM1:"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Data_LUM1" type="Label" parent="GridContainer"]
-margin_left = 67.0
-margin_top = 72.0
-margin_right = 67.0
-margin_bottom = 86.0
-rect_pivot_offset = Vector2( -704, -45 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label_LUM2" type="Label" parent="GridContainer"]
-margin_top = 90.0
-margin_right = 63.0
-margin_bottom = 104.0
-rect_pivot_offset = Vector2( -704, -45 )
-text = "LUM2:"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Data_LUM2" type="Label" parent="GridContainer"]
-margin_left = 67.0
-margin_top = 90.0
-margin_right = 67.0
-margin_bottom = 104.0
-rect_pivot_offset = Vector2( -704, -45 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="Loading" type="Label" parent="."]
-margin_left = 44.0
-margin_top = 389.0
-margin_right = 161.0
-margin_bottom = 420.0
+margin_left = 279.0
+margin_top = 129.0
+margin_right = 450.0
+margin_bottom = 161.0
 text = "
 "
 __meta__ = {
@@ -306,10 +126,10 @@ wait_time = 15.0
 [node name="ProgressBar" type="ProgressBar" parent="Timer"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = 120.0
-margin_top = 85.0
-margin_right = 185.0
-margin_bottom = 103.0
+margin_left = 147.0
+margin_top = 29.0
+margin_right = 212.0
+margin_bottom = 47.0
 max_value = 15.0
 percent_visible = false
 __meta__ = {
@@ -319,132 +139,10 @@ __meta__ = {
 [node name="CheckButton" type="CheckButton" parent="Timer"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = 112.0
-margin_top = 42.0
-margin_right = 188.0
-margin_bottom = 82.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="GridContainer2" type="GridContainer" parent="."]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = 26.0
-margin_top = 148.0
-margin_right = 155.0
-margin_bottom = 252.0
-columns = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label_id" type="Label" parent="GridContainer2"]
-margin_right = 63.0
-margin_bottom = 14.0
-text = "ID:"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Data_id" type="Label" parent="GridContainer2"]
-margin_left = 67.0
-margin_right = 67.0
-margin_bottom = 14.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label_temp" type="Label" parent="GridContainer2"]
+margin_left = 74.0
 margin_top = 18.0
-margin_right = 63.0
-margin_bottom = 32.0
-text = "TEMP:"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Data_temp" type="Label" parent="GridContainer2"]
-margin_left = 67.0
-margin_top = 18.0
-margin_right = 67.0
-margin_bottom = 32.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label_I" type="Label" parent="GridContainer2"]
-margin_top = 36.0
-margin_right = 63.0
-margin_bottom = 50.0
-text = "Corriente:"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Data_I" type="Label" parent="GridContainer2"]
-margin_left = 67.0
-margin_top = 36.0
-margin_right = 67.0
-margin_bottom = 50.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label_V" type="Label" parent="GridContainer2"]
-margin_top = 54.0
-margin_right = 63.0
-margin_bottom = 68.0
-text = "Voltaje:"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Data_V" type="Label" parent="GridContainer2"]
-margin_left = 67.0
-margin_top = 54.0
-margin_right = 67.0
-margin_bottom = 68.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label_LUM1" type="Label" parent="GridContainer2"]
-margin_top = 72.0
-margin_right = 63.0
-margin_bottom = 86.0
-rect_pivot_offset = Vector2( -704, -45 )
-text = "LUM1:"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Data_LUM1" type="Label" parent="GridContainer2"]
-margin_left = 67.0
-margin_top = 72.0
-margin_right = 67.0
-margin_bottom = 86.0
-rect_pivot_offset = Vector2( -704, -45 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label_LUM2" type="Label" parent="GridContainer2"]
-margin_top = 90.0
-margin_right = 63.0
-margin_bottom = 104.0
-rect_pivot_offset = Vector2( -704, -45 )
-text = "LUM2:"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Data_LUM2" type="Label" parent="GridContainer2"]
-margin_left = 67.0
-margin_top = 90.0
-margin_right = 67.0
-margin_bottom = 104.0
-rect_pivot_offset = Vector2( -704, -45 )
+margin_right = 150.0
+margin_bottom = 58.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -515,17 +213,6 @@ max_value = 1000.0
 unit = "[Lux]"
 variable_name = "Luz (OUT)"
 
-[node name="ESTADO" type="Label" parent="."]
-margin_left = 25.0
-margin_top = 956.0
-margin_right = 132.0
-margin_bottom = 970.0
-rect_pivot_offset = Vector2( 582, 49 )
-text = "ESTADO"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="Back" type="Button" parent="."]
 margin_left = 628.0
 margin_top = 14.0
@@ -537,13 +224,25 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
-[connection signal="pressed" from="Button2" to="." method="_on_Button2_pressed"]
-[connection signal="pressed" from="Button3" to="." method="_on_Button3_pressed"]
+[node name="Button6" type="Button" parent="."]
+anchor_left = -0.00833333
+anchor_top = -0.0585938
+anchor_right = -0.00833333
+anchor_bottom = -0.0585938
+margin_left = 49.0
+margin_top = 153.0
+margin_right = 160.0
+margin_bottom = 173.0
+text = "Iniciar"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
 [connection signal="pressed" from="Button4" to="." method="_on_Button4_pressed"]
 [connection signal="pressed" from="Button5" to="." method="_on_Button5_pressed"]
 [connection signal="item_selected" from="ItemList" to="." method="_on_ItemList_item_selected"]
 [connection signal="request_completed" from="ProvisionRequest" to="." method="_on_ProvisionRequest_request_completed"]
+[connection signal="request_completed" from="ProfileRequest" to="." method="_on_ProfileRequest_request_completed"]
 [connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]
 [connection signal="request_completed" from="LoginRequest" to="." method="_on_LoginRequest_request_completed"]
 [connection signal="request_completed" from="CustomerRequest" to="." method="_on_CustomRequest_request_completed"]
@@ -553,3 +252,4 @@ __meta__ = {
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="pressed" from="Timer/CheckButton" to="." method="_on_CheckButton_pressed"]
 [connection signal="pressed" from="Back" to="." method="_on_Back_pressed"]
+[connection signal="pressed" from="Button6" to="." method="_on_Button6_pressed"]

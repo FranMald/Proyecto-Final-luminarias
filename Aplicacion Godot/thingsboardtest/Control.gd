@@ -6,6 +6,8 @@ onready var login_request := $LoginRequest
 onready var customer_request := $CustomerRequest
 onready var telemetry_request := $TelemetryRequest
 onready var attributes_request := $AttributesRequest
+onready var profile_request := $ProfileRequest
+
 onready var customer_input := $VBoxContainer/LineEdit3
 onready var username_input := $VBoxContainer/LineEdit
 onready var password_input := $VBoxContainer/LineEdit2
@@ -34,18 +36,29 @@ onready var hum_gauge := $MeanGauge4
 onready var i_gauge := $MeanGauge5
 onready var lum2_gauge := $MeanGauge6
 var devices
+onready var G = get_node("/root/Global")
 
-var token := ""
-
-
-
-func request_customer(token,custumer):
-	var headers = ["Content-Type: application/json", "X-Authorization: " + token]
-	#http_request.request("https://demo.thingsboard.io/api/plugins/telemetry/DEVICE/673c8f30-fc99-11eb-9ff0-27b56077cf87/values/timeseries?keys=HUM", headers, true, HTTPClient.METHOD_GET)
-	#http_request.request("https://demo.thingsboard.io/api/customer/8c4c39c0-be7c-11eb-a311-cf80d7127bfd/device?pageSize=50&page=0", headers, true, HTTPClient.METHOD_GET)
-	http_request.request("https://demo.thingsboard.io:443/api/tenant/customers?customerTitle="+custumer, headers, true, HTTPClient.METHOD_GET)
-	loading.text="Solictando Customer ID..."
+func _ready():
+	pass # Replace with function body.-
 	
+func _on_Back_pressed():
+	#Global.goto_scene("res://inicio.tscn")
+	get_tree().change_scene_to(load('res://inicio.tscn'))
+
+func _on_ProfileRequest_request_completed(result, response_code, headers, body):
+	var __my_file := File.new()
+	var __my_text := str("This is line one.")
+	print(response_code)
+	if response_code == 200:
+		loading.text=""
+		var json = JSON.parse(body.get_string_from_utf8())
+		__my_file.open("res://Test.txt", __my_file.WRITE)
+		assert(__my_file.is_open())
+		__my_file.store_string(body.get_string_from_utf8())
+		__my_file.close()
+		print(json.result.provisionDeviceKey)
+		print(json.result.profileData.provisionConfiguration.provisionDeviceSecret)
+		
 func _on_CustomRequest_request_completed(result, response_code, headers, body):
 	print(response_code)
 	if response_code == 200:
@@ -72,9 +85,9 @@ func _on_LoginRequest_request_completed(result, response_code, headers, body):
 		loading.text=""
 		var json = JSON.parse(body.get_string_from_utf8())
 		print(json.result)
-		token = "Bearer " + json.result["token"]
+		G.token = "Bearer " + json.result["token"]
 		var custumer=customer_input.text
-		request_customer(token,custumer)
+		request_customer(G.token,custumer)
 		loading.text="Solictando Customer Info..."
 		
 func _on_TelemetryRequest_request_completed(result, response_code, headers, body):
@@ -92,7 +105,19 @@ func _on_TelemetryRequest_request_completed(result, response_code, headers, body
 		if $Timer/CheckButton.pressed:
 			$Timer.one_shot=true
 			$Timer.start(15)
-
+			
+func _on_AttributesRequest_request_completed(result, response_code, headers, body):
+	print(response_code)
+	if response_code == 200:
+		loading.text=""
+		var json = JSON.parse(body.get_string_from_utf8())
+		print(json.result)
+		
+func request_customer(token,custumer):
+	var headers = ["Content-Type: application/json", "X-Authorization: " + token]
+	http_request.request("https://demo.thingsboard.io:443/api/tenant/customers?customerTitle="+custumer, headers, true, HTTPClient.METHOD_GET)
+	loading.text="Solictando Customer ID..."
+	
 func _on_Button_pressed():
 	var query = JSON.print({"username" : username_input.text, "password" : password_input.text})
 	print(query)
@@ -111,27 +136,19 @@ func _on_ItemList_item_selected(index):
 	var CurrentTime= 1000*OS.get_unix_time();
 	var startTs=CurrentTime-1000000
 	var endTs=CurrentTime
-	var headers = ["Content-Type: application/json", "X-Authorization: " + token]
-	#print("https://demo.thingsboard.io/api/plugins/telemetry/DEVICE/"+devices.result.data[index].id.id+"/values/timeseries?keys=HUM&startTs="+str(startTs)+"&endTs="+str(endTs))
-	#telemetry_request.request("https://demo.thingsboard.io/api/plugins/telemetry/DEVICE/"+devices.result.data[index].id.id+"/values/timeseries?keys=HUM&startTs="+str(startTs)+"&endTs="+str(endTs), headers, true, HTTPClient.METHOD_GET)
+	var headers = ["Content-Type: application/json", "X-Authorization: " + G.token]
 	telemetry_request.request("https://demo.thingsboard.io/api/plugins/telemetry/DEVICE/"+devices.result.data[index].id.id+"/values/timeseries", headers, true, HTTPClient.METHOD_GET)
 	loading.text="Solicitando última telemetría..."
 	
-func _on_Button3_pressed():
-	print($Timer/CheckButton.pressed)
-	print($Timer.time_left)
-
-
 func _on_Button4_pressed():
 	var index=$ItemList.get_selected_items()[0]
-	var headers = ["Content-Type: application/json", "X-Authorization: " + token]
+	var headers = ["Content-Type: application/json", "X-Authorization: " + G.token]
 	telemetry_request.request("https://demo.thingsboard.io/api/plugins/telemetry/DEVICE/"+devices.result.data[index].id.id+"/values/timeseries", headers, true, HTTPClient.METHOD_GET)
 	loading.text="Solicitando última telemetría..."
 
-
 func _on_Timer_timeout():
 	var index=$ItemList.get_selected_items()[0]
-	var headers = ["Content-Type: application/json", "X-Authorization: " + token]
+	var headers = ["Content-Type: application/json", "X-Authorization: " + G.token]
 	telemetry_request.request("https://demo.thingsboard.io/api/plugins/telemetry/DEVICE/"+devices.result.data[index].id.id+"/values/timeseries", headers, true, HTTPClient.METHOD_GET)
 	loading.text="Solicitando última telemetría..."
 
@@ -142,25 +159,21 @@ func _on_CheckButton_pressed():
 	else:
 		$Timer.stop()
 
-
-
 func _on_Timer2_timeout():
 	$Timer/ProgressBar.value=$Timer.time_left
 
-
 func _on_Button5_pressed():
 	var index=$ItemList.get_selected_items()[0]
-	var headers = ["Content-Type: application/json", "X-Authorization: " + token]
+	var headers = ["Content-Type: application/json", "X-Authorization: " + G.token]
 	attributes_request.request("https://demo.thingsboard.io/api/plugins/telemetry/DEVICE/"+devices.result.data[index].id.id+"/values/attributes", headers, true, HTTPClient.METHOD_GET)
 	loading.text="Solicitando Configuracion..."
 
+func _on_Button3_pressed():
+	var headers = ["Content-Type: application/json", "X-Authorization: " + G.token]
+	profile_request.request("https://demo.thingsboard.io/api/deviceProfile/04819920-bd8e-11eb-a311-cf80d7127bfd", headers, true, HTTPClient.METHOD_GET)
+	loading.text="Solicitando última telemetría..."
 
-func _on_AttributesRequest_request_completed(result, response_code, headers, body):
-	print(response_code)
-	if response_code == 200:
-		loading.text=""
-		var json = JSON.parse(body.get_string_from_utf8())
-		print(json.result)
-
-func _on_Back_pressed():
-	get_tree().change_scene_to(load('res://inicio.tscn'))
+func _on_Button6_pressed():
+	var custumer=customer_input.text
+	request_customer(G.token,custumer)
+	loading.text="Solictando Customer Info..."

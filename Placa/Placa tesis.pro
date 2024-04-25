@@ -1,4 +1,4 @@
-update=dom 19 jul 2020 21:22:33 -03
+update=dom 27 nov 2022 18:23:50
 version=1
 last_client=kicad
 [cvpcb]
@@ -22,7 +22,7 @@ ERC_TestSimilarLabels=1
 [pcbnew]
 version=1
 PageLayoutDescrFile=
-LastNetListRead=Placa tesis.net
+LastNetListRead=Placa tesis2.net
 CopperLayerCount=2
 BoardThickness=1.6
 AllowMicroVias=0

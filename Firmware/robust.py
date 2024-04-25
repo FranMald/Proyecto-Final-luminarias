@@ -40,5 +40,5 @@ class MQTTClient(simple.MQTTClient):
                 return super().wait_msg()
             except OSError as e:
                 self.log(False, e)
-            self.reconnect()alse, e)
+            self.reconnect(False, e)
             self.reconnect()

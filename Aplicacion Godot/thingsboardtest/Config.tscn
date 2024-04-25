@@ -19,7 +19,7 @@ Button/styles/pressed = null
 [node name="Control" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-rect_pivot_offset = Vector2( 198, 176 )
+rect_pivot_offset = Vector2( 549, 174 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -36,10 +36,10 @@ __meta__ = {
 }
 
 [node name="Load_Config" type="Button" parent="."]
-margin_left = 79.0
-margin_top = 417.0
-margin_right = 220.0
-margin_bottom = 463.0
+margin_left = 10.0
+margin_top = 244.0
+margin_right = 151.0
+margin_bottom = 290.0
 theme = SubResource( 1 )
 text = "Cargar Configuracion"
 __meta__ = {
@@ -47,10 +47,10 @@ __meta__ = {
 }
 
 [node name="Reset" type="Button" parent="."]
-margin_left = 75.0
-margin_top = 481.0
-margin_right = 216.0
-margin_bottom = 527.0
+margin_left = 164.0
+margin_top = 244.0
+margin_right = 305.0
+margin_bottom = 290.0
 theme = SubResource( 1 )
 text = "Resetear"
 __meta__ = {
@@ -59,10 +59,10 @@ __meta__ = {
 
 [node name="VBoxContainer2" type="GridContainer" parent="."]
 anchor_right = 0.5
-margin_left = 53.0
-margin_top = 128.0
-margin_right = 10.0
-margin_bottom = 308.0
+margin_left = 15.0
+margin_top = 22.0
+margin_right = -28.0
+margin_bottom = 202.0
 columns = 2
 __meta__ = {
 "_edit_use_anchors_": false
@@ -168,20 +168,32 @@ __meta__ = {
 }
 
 [node name="ESTADO" type="Label" parent="."]
-margin_left = 269.0
-margin_top = 367.0
-margin_right = 376.0
-margin_bottom = 381.0
+margin_left = 19.0
+margin_top = 214.0
+margin_right = 126.0
+margin_bottom = 228.0
 rect_pivot_offset = Vector2( 582, 49 )
 text = "ESTADO"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="LoginRequest" type="HTTPRequest" parent="."]
+
 [node name="ProvisionRequest" type="HTTPRequest" parent="."]
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
+[node name="CustomerRequest" type="HTTPRequest" parent="."]
+
+[node name="ProfileRequest" type="HTTPRequest" parent="."]
 
 [connection signal="pressed" from="Back" to="." method="_on_Back_pressed"]
 [connection signal="pressed" from="Load_Config" to="." method="_on_Load_Config_pressed"]
 [connection signal="pressed" from="Reset" to="." method="_on_Reset_pressed"]
 [connection signal="pressed" from="VBoxContainer2/CheckButton" to="." method="_on_CheckButton_pressed"]
+[connection signal="request_completed" from="LoginRequest" to="." method="_on_LoginRequest_request_completed"]
 [connection signal="request_completed" from="ProvisionRequest" to="." method="_on_ProvisionRequest_request_completed"]
+[connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]
+[connection signal="request_completed" from="CustomerRequest" to="." method="_on_CustomerRequest_request_completed"]
+[connection signal="request_completed" from="ProfileRequest" to="." method="_on_ProfileRequest_request_completed"]

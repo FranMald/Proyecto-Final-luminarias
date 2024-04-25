@@ -30,6 +30,14 @@ def sub_cb(topic_cb, msg):
         topic_last=str(topic_last)[2:-1]
         topic_last=topic_last.replace("request","response")
         c.publish(topic_last,str(PWM))
+    if ATTR.get('method')=='getRate':
+        topic_last=str(topic_last)[2:-1]
+        topic_last=topic_last.replace("request","response")
+        c.publish(topic_last,str(scan_rate))
+    if ATTR.get('method')=='getAVG':
+        topic_last=str(topic_last)[2:-1]
+        topic_last=topic_last.replace("request","response")
+        c.publish(topic_last,str(AVG))
     if ATTR.get('method')=='getScanStat':
         topic_last=str(topic_last)[2:-1]
         topic_last=topic_last.replace("request","response")
@@ -55,6 +63,10 @@ def sub_cb(topic_cb, msg):
         PWM=int(ATTR.get('params'))
         ctrl_PWM.duty(PWM)
         print(PWM)
+    if ATTR.get('method')=='setRate':
+        scan_rate=int(ATTR.get('params'))
+        if scan_state=='on':
+            tim.init(period=scan_rate,callback=Scan_callback)  
     if ATTR.get('method')=='setScanStat':                        
         if ATTR.get('params')==True:
             tim.deinit()
@@ -110,7 +122,7 @@ def sub_cb(topic_cb, msg):
     tim2.init(period=100,callback=Sub_timer2_cb)
     
 def Sub_timer2_cb(timer):
-    global d,c,values,Pin_STS,tags,x,muestras,INH,ctrl_PWM
+    global d,c,values,Pin_STS,tags,x,muestras,INH,ctrl_PWM,led
     if INH:
         tim2.deinit()
         try:                        
@@ -135,8 +147,8 @@ def Sub_timer2_cb(timer):
         try:
             c.check_msg()
         except:
-            print("Error en MQTT")
-        tim2.init(period=100,callback=Sub_timer2_cb)
+            print(c)
+        tim2.init(period=100,callback=Sub_timer2_cb)        
             
 def Scan_callback(timer):
     global d,c,values,Pin_STS,tags,x,muestras
@@ -204,37 +216,38 @@ def leerCONF():
 
 def abrirCONF():
     global APS  
+    #print("CONF")
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.bind(('', 80))
     s.listen(1)
 
     while True: 
         conn, addr = s.accept()
-        print('Got a connection from %s' % str(addr))
+        #print('Got a connection from %s' % str(addr))
         request1 = str(conn.recv(1024))
-        print(request1)
+        #print(request1)
         request=request1[2:-1].split("\\r\\n")
         conf=ujson.loads(request[-1])
         print(request[-1])
         conn.send('HTTP/1.1 200 OK\n')
-        conn.send('Configuracion\n')
+        conn.send('Conf\n')
         conn.send('Connection: close\n\n')
         conn.sendall("holo")
         conn.close()
             
         if conf.get('wifi_ssid')!=None and conf.get('wifi_pword')!=None and conf.get('mqtt_url')!=None and conf.get('mqtt_user')!=None:
-            print("guardar")
+            #print("guardar")
             f = open('conf_net.txt','w')
             f.write(ujson.dumps(conf))
             f.close() 
             
         if conf.get('command')=="reset":
-            print("RESET")
+            #print("RESET")
             f = open('conf_net.txt')
             net_conf=ujson.loads(f.read())
             f.close()
-            if net_conf.get('mqtt_user')=="provision":
-                print('provision')
+            if net_conf.get('mqtt_user')=='provision':
+                #print('provision')
                 do_connect(net_conf.get('wifi_ssid'),net_conf.get('wifi_pword'))
                 cp = MQTTClient("provision",server=net_conf.get('mqtt_url'),user="provision",password="",port=1883,keepalive=30)
                 cp.set_callback(response_cb)
@@ -247,13 +260,10 @@ def abrirCONF():
                 cp.publish("/provision/request",ujson.dumps(PROVISION_REQUEST))
                 cp.wait_msg()
                 print(TOKEN)
-                if TOKEN != "":
-                	net_conf['mqtt_user']=TOKEN
-                	f = open('conf_net.txt','w')
-                	f.write(ujson.dumps(net_conf))
-                	f.close() 
-                else:
-                	#borrar conf_net.txt
+                net_conf['mqtt_user']=TOKEN
+                f = open('conf_net.txt','w')
+                f.write(ujson.dumps(net_conf))
+                f.close() 
             machine.reset()
 #--------------- comienzo del programa----------------------
     
@@ -261,12 +271,9 @@ try:
     f=open('conf_net.txt')
 except:
     abrirCONF()
-
 pin_EN= machine.Pin(13,machine.Pin.OUT)
 pin_EN.off()
-pin_BOARD= machine.Pin(2,machine.Pin.OUT)
-pin_BOARD.on()
-
+led=0
 INH=1
 dict = {}
 dict2 = {}
@@ -331,7 +338,7 @@ if leerCONF()==0:
         pid.setpoint=0
         pid.output_limits = (10, 300) 
         #configuracion de MQTT
-        c = MQTTClient("sensor"+str(id_sensor),server=url,user=user,password=pword,keepalive=30)
+        c = MQTTClient(str(id_sensor),server=url,user=user,password=pword,keepalive=30)
         c.set_callback(sub_cb)
         #c.connect()
         for i in range(0,5):

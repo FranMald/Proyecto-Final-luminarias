@@ -340,11 +340,11 @@ X ~ 2 0 -150 50 U 50 50 1 1 P
 ENDDRAW
 ENDDEF
 #
-# Placa-tesis-rescue_FT230XS-Interface_USB-Placa-tesis-rescue
+# Placa-tesis-rescue_FT230XS-Interface_USB-Placa-tesis-rescue-Placa-tesis-rescue
 #
-DEF Placa-tesis-rescue_FT230XS-Interface_USB-Placa-tesis-rescue U 0 40 Y Y 1 F N
+DEF Placa-tesis-rescue_FT230XS-Interface_USB-Placa-tesis-rescue-Placa-tesis-rescue U 0 40 Y Y 1 F N
 F0 "U" -550 600 50 H V L CNN
-F1 "Placa-tesis-rescue_FT230XS-Interface_USB-Placa-tesis-rescue" 300 600 50 H V L CNN
+F1 "Placa-tesis-rescue_FT230XS-Interface_USB-Placa-tesis-rescue-Placa-tesis-rescue" 300 600 50 H V L CNN
 F2 "Package_SO:SSOP-16_3.9x4.9mm_P0.635mm" 450 -650 50 H I C CNN
 F3 "" 0 0 50 H I C CNN
 $FPLIST
@@ -371,11 +371,11 @@ X USBDM 9 -700 100 150 R 50 50 1 1 B
 ENDDRAW
 ENDDEF
 #
-# Placa-tesis-rescue_LM3464AMH_NOPB-LM3464AMH_NOPB-Placa-tesis-rescue
+# Placa-tesis-rescue_LM3464AMH_NOPB-LM3464AMH_NOPB-Placa-tesis-rescue-Placa-tesis-rescue
 #
-DEF Placa-tesis-rescue_LM3464AMH_NOPB-LM3464AMH_NOPB-Placa-tesis-rescue U 0 40 Y Y 1 L N
+DEF Placa-tesis-rescue_LM3464AMH_NOPB-LM3464AMH_NOPB-Placa-tesis-rescue-Placa-tesis-rescue U 0 40 Y Y 1 L N
 F0 "U" -700 1040 50 H V L BNN
-F1 "Placa-tesis-rescue_LM3464AMH_NOPB-LM3464AMH_NOPB-Placa-tesis-rescue" -701 -1160 50 H V L BNN
+F1 "Placa-tesis-rescue_LM3464AMH_NOPB-LM3464AMH_NOPB-Placa-tesis-rescue-Placa-tesis-rescue" -701 -1160 50 H V L BNN
 F2 "SOP65P640X110-29N" 0 0 50 H I L BNN
 F3 "LM3464AMH/NOPB" 0 0 50 H I L BNN
 F4 "Good" 0 0 50 H I L BNN
@@ -419,11 +419,11 @@ X FAULT_CAP 9 -900 -400 200 R 40 40 0 0 B
 ENDDRAW
 ENDDEF
 #
-# Placa-tesis-rescue_Nodemcuv_3-nodemcu-Placa-tesis-rescue
+# Placa-tesis-rescue_Nodemcuv_3-nodemcu-Placa-tesis-rescue-Placa-tesis-rescue
 #
-DEF Placa-tesis-rescue_Nodemcuv_3-nodemcu-Placa-tesis-rescue U 0 40 Y Y 1 F N
+DEF Placa-tesis-rescue_Nodemcuv_3-nodemcu-Placa-tesis-rescue-Placa-tesis-rescue U 0 40 Y Y 1 F N
 F0 "U" 700 350 50 H V C CNN
-F1 "Placa-tesis-rescue_Nodemcuv_3-nodemcu-Placa-tesis-rescue" 700 350 50 H V C CNN
+F1 "Placa-tesis-rescue_Nodemcuv_3-nodemcu-Placa-tesis-rescue-Placa-tesis-rescue" 700 350 50 H V C CNN
 F2 "" 700 350 50 H I C CNN
 F3 "" 700 350 50 H I C CNN
 DRAW
@@ -461,11 +461,11 @@ X SK 9 1300 -250 100 L 50 50 1 1 I
 ENDDRAW
 ENDDEF
 #
-# Placa-tesis-rescue_USB_B_Micro-Connector
+# Placa-tesis-rescue_USB_B_Micro-Connector-Placa-tesis-rescue
 #
-DEF Placa-tesis-rescue_USB_B_Micro-Connector J 0 40 Y Y 1 F N
+DEF Placa-tesis-rescue_USB_B_Micro-Connector-Placa-tesis-rescue J 0 40 Y Y 1 F N
 F0 "J" -200 450 50 H V L CNN
-F1 "Placa-tesis-rescue_USB_B_Micro-Connector" -200 350 50 H V L CNN
+F1 "Placa-tesis-rescue_USB_B_Micro-Connector-Placa-tesis-rescue" -200 350 50 H V L CNN
 F2 "" 150 -50 50 H I C CNN
 F3 "" 150 -50 50 H I C CNN
 $FPLIST

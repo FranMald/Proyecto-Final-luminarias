@@ -1,4 +1,5 @@
-extends Node
+extends Control
+
 
 onready var SSID_input := $VBoxContainer2/LineEdit
 onready var PWORD_input := $VBoxContainer2/LineEdit2
@@ -9,21 +10,18 @@ onready var DEVTOKEN_label := $VBoxContainer2/Label4
 onready var Provision_check := $VBoxContainer2/CheckButton
 onready var ESTADO:= $ESTADO
 onready var provision_request := $ProvisionRequest
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+onready var login_request := $LoginRequest
+onready var http_request := $HTTPRequest
 
 
-# Called when the node enters the scene tree for the first time.
+onready var G = get_node("/root/Global")
+
+
 func _ready():
 	pass # Replace with function body.-
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
-
-
 func _on_Back_pressed():
+	#Global.goto_scene("res://inicio.tscn")
 	get_tree().change_scene_to(load('res://inicio.tscn'))
 
 func _on_CheckButton_pressed():
@@ -45,7 +43,6 @@ func _on_Load_Config_pressed():
 		var headers = ["Configuracion"]
 		var request_data = '{"wifi_ssid": "'+SSID_input.text+'","wifi_pword": "'+ PWORD_input.text +'","mqtt_url": "'+URL_input.text+'","mqtt_user": "'+DEVTOKEN_input.text+'","NAME": "'+NAME_input.text+'"}'
 		print (request_data)
-		#provision_request.request("http://192.168.0.17",headers,true,HTTPClient.METHOD_GET, request_data)
 		ESTADO.text="Esperando Respuesta de Dispositivo"
 		provision_request.request("http://192.168.4.1",headers,true,HTTPClient.METHOD_GET, request_data)
 	else:
@@ -55,7 +52,6 @@ func _on_Reset_pressed():
 	var headers = ["Configuracion"]
 	var request_data = '{"command": "reset"}'
 	ESTADO.text="Esperando Respuesta de Dispositivo"
-	#provision_request.request("http://192.168.0.17",headers,true,HTTPClient.METHOD_GET, request_data)
 	provision_request.request("http://192.168.4.1",headers,true,HTTPClient.METHOD_GET, request_data)
 
 func _on_ProvisionRequest_request_completed(result, response_code, headers, body):
@@ -66,3 +62,4 @@ func _on_ProvisionRequest_request_completed(result, response_code, headers, body
 		print (result)
 		print (str(body))
 
+		
